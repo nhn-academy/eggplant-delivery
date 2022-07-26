@@ -25,9 +25,8 @@ jobs:
         
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-      
+
     - name: Run SonarQube
-      run: mvn sonar:sonar \
-        -Dsonar.projectKey=eggplant-delivery \
-        -Dsonar.host.url=http://133.186.211.156:9000 \
-        -Dsonar.login=c156159bc55d0e82a35f4dc678dd9ae740213997
+      run: mvn sonar:sonar -Dsonar.projectKey=${{ secrets.SONARQUBE_PROJECT_KEY }}
+                           -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }}
+                           -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}

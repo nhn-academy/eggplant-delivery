@@ -1,5 +1,8 @@
 package com.nhnacademy.eggplantdelivery.entity;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,6 +18,7 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "location")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Location {
 
     @Id
@@ -29,3 +33,4 @@ public class Location {
     private LocalDateTime arrivalTime;
 
 }
+

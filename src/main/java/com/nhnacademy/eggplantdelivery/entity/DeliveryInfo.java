@@ -24,9 +24,8 @@ import javax.persistence.Table;
 public class DeliveryInfo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "slip_no")
-    private Long slipNo;
+    @Column(name = "tracking_no")
+    private Long trackingNo;
 
     @Column
     @Enumerated(value = EnumType.STRING)
@@ -39,3 +38,4 @@ public class DeliveryInfo {
     private String receiverAddress;
 
 }
+

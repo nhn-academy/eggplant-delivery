@@ -35,5 +35,6 @@ public class SecureKeyResponseDto {
     public static class Body {
         private String secret;
     }
+
 }
 

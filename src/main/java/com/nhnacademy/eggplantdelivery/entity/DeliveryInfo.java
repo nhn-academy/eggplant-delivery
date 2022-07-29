@@ -35,3 +35,4 @@ public class DeliveryInfo {
     private String receiverAddress;
 
 }
+

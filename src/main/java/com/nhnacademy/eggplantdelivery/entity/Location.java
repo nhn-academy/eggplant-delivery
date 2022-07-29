@@ -32,3 +32,4 @@ public class Location {
     private LocalDateTime arrivalTime;
 
 }
+

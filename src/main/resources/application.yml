@@ -1,0 +1,11 @@
+rabbitmq:
+  host: b2d2bb80e0f843e396337084925a54fc
+  port: 5672
+  username: ea91066a691544fd98109e8eb7e6a494
+  password: ff39e7234e55400ebf81feec38e1b64e
+
+# NHN SecureManager
+secure-key-manager:
+  url: https://api-keymanager.cloud.toast.com
+  app-key: mcXcTmrnbRezlila
+  local-key: gaship

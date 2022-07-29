@@ -1,6 +1,6 @@
 ---
 name: eggplant-delivery 이슈 템플릿
-about: 이 양식에 맞춰서 작성 해 주세요.
+about: 기본 양식 입니다.
 title: ''
 labels: ''
 assignees: ''
@@ -21,4 +21,4 @@ assignees: ''
 - XXX
 - XXX
 
-> Co-authored by CoRock
+> Advice by CoRock

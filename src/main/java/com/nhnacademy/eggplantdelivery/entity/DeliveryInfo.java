@@ -34,7 +34,7 @@ public class DeliveryInfo {
     @Column(name = "receiver_address")
     private String receiverAddress;
 
-    @Column(name= "receiver_phone")
+    @Column(name = "receiver_phone")
     private String receiverPhone;
 
 }

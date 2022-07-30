@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Table(name = "location")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Location {
 
     @Id

@@ -72,11 +72,11 @@ public class RabbitmqConfig {
      * @param authenticationConfig secure key와 관련된 설정을 위한 객체.
      * @return 연결 설정하는 ConnectionFactory 반환.
      * @throws UnrecoverableKeyException key를 복원할 수 없는 경우에 예외를 발생.
-     * @throws CertificateException 인증서의 encode 문제, 유효하지 않은 경우 예외 발생.
-     * @throws KeyStoreException 키스토어 예외 발생.
-     * @throws IOException I/O 오류가 발생하는 경우에 throw되는 예외 발생.
-     * @throws NoSuchAlgorithmException 암호 알고리즘이 요구되었음에도 불구하고, 현재의 환경에서는 사용 가능하지 않은 경우에 예외 발생.
-     * @throws KeyManagementException 키 관리를 다루는 모든 작업에 대한 일반적인 키 관리 예외 발생.
+     * @throws CertificateException      인증서의 encode 문제, 유효하지 않은 경우 예외 발생.
+     * @throws KeyStoreException         키스토어 예외 발생.
+     * @throws IOException               I/O 오류가 발생하는 경우에 throw되는 예외 발생.
+     * @throws NoSuchAlgorithmException  암호 알고리즘이 요구되었음에도 불구하고, 현재의 환경에서는 사용 가능하지 않은 경우에 예외 발생.
+     * @throws KeyManagementException    키 관리를 다루는 모든 작업에 대한 일반적인 키 관리 예외 발생.
      */
     @Bean
     public ConnectionFactory connectionFactory(AuthenticationConfig authenticationConfig)
@@ -119,4 +119,3 @@ public class RabbitmqConfig {
     }
 
 }
-

@@ -21,6 +21,7 @@ public class SecureKeyResponseDto {
      */
     @Getter
     public static class Header {
+
         private Integer resultCode;
         private String resultMessage;
         private Boolean isSuccessful;
@@ -33,6 +34,7 @@ public class SecureKeyResponseDto {
      */
     @Getter
     public static class Body {
+
         private String secret;
     }
 

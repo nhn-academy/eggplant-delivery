@@ -59,10 +59,10 @@ public class AuthenticationConfig {
     }
 
     /**
-     * nhn cloud key manager에 secure key를 얻기 위한 메서드.
+     * nhn cloud key manager 에 secure key 를 얻기 위한 메서드.
      *
-     * @param keyId secure key를 얻기 위해 필요한 key id.
-     * @return 원하는 secure key를 반환.
+     * @param keyId secure key 를 얻기 위해 필요한 key id.
+     * @return 원하는 secure key 를 반환.
      */
     String findSecretDataFromSecureKeyManager(final String keyId)
         throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException,

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class Sender {
+
     private final RabbitTemplate rabbitTemplate;
 
     public void send(final OrderInfoDto orderInfoDto) {

@@ -21,26 +21,19 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DefaultDeliveryService implements DeliveryService {
 
-    private final Sender sender;
-    private final Receiver receiver;
-    private final DeliveryInfoRepository deliveryInfoRepository;
+    private  final DeliveryInfoRepository deliveryInfoRepository;
     private final DeliveryInfoMapper deliveryInfoMapper;
+    private final Sender sender;
 
     @Override
-    public Long createTrackingNo(final OrderInfoDto orderInfoDto) {
-        sender.send(orderInfoDto);
-
-        OrderInfoDto orderInfo = receiver.receive();
-
+    public void createTrackingNo(final OrderInfoDto orderInfoDto) {
         Long trackingNo = Long.parseLong(RandomStringUtils.random(16, false, true));
 
-        DeliveryInfo deliveryInfo = deliveryInfoMapper.toEntity(orderInfo);
+        DeliveryInfo deliveryInfo = deliveryInfoMapper.toEntity(orderInfoDto);
         deliveryInfo.setTrackingNo(trackingNo);
         deliveryInfo.setStatus(Status.DELIVERING);
 
         deliveryInfoRepository.save(deliveryInfo);
-
-        return deliveryInfo.getTrackingNo();
     }
 
 }

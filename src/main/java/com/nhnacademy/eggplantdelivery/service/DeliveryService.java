@@ -9,6 +9,6 @@ import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoDto;
  */
 public interface DeliveryService {
 
-    Long createTrackingNo(final OrderInfoDto orderInfoDto);
+    void createTrackingNo(final OrderInfoDto orderInfoDto);
 
 }

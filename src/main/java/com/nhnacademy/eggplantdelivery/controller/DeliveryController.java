@@ -1,8 +1,10 @@
 package com.nhnacademy.eggplantdelivery.controller;
 
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoDto;
-import com.nhnacademy.eggplantdelivery.service.DeliveryService;
+import com.nhnacademy.eggplantdelivery.module.Sender;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class DeliveryController {
 
-    private final DeliveryService deliveryService;
+    private final Sender sender;
 
     /**
      * 운송장번호를 생성 요청을 처리하는 컨트롤러 메서드 입니다.
@@ -27,8 +29,11 @@ public class DeliveryController {
      * @return 운송장번호를 반환 합니다..
      */
     @PostMapping("/tracking-no")
-    public Long createTrackingNo(@RequestBody final OrderInfoDto orderInfoDto) {
-        return deliveryService.createTrackingNo(orderInfoDto);
+    public ResponseEntity<Void> createTrackingNo(@RequestBody final OrderInfoDto orderInfoDto) {
+        sender.send(orderInfoDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .build();
     }
 
 }

@@ -7,8 +7,11 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * 배송정보 엔티티 입니다.
@@ -17,7 +20,11 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Table(name = "delivery_info")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class DeliveryInfo {
 
     @Id

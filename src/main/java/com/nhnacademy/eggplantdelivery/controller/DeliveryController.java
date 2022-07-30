@@ -1,7 +1,7 @@
 package com.nhnacademy.eggplantdelivery.controller;
 
-import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
-import com.nhnacademy.eggplantdelivery.module.Sender;
+import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoDto;
+import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,12 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class DeliveryController {
 
-    private final Sender sender;
+    private final DeliveryService deliveryService;
 
+    /**
+     * 운송장번호를 생성 요청을 처리하는 컨트롤러 메서드 입니다.
+     *
+     * @param orderInfoDto 쇼핑몰 서버에서 넘어온 주문 정보입니다.
+     * @return 운송장번호를 반환 합니다..
+     */
     @PostMapping("/tracking-no")
-    public String getDeliveryTrackingNo(@RequestBody final OrderInfoRequestDto orderInfoRequestDto) {
-        sender.send(orderInfoRequestDto);
-        return null;
+    public Long createTrackingNo(@RequestBody final OrderInfoDto orderInfoDto) {
+        return deliveryService.createTrackingNo(orderInfoDto);
     }
 
 }

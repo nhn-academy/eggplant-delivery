@@ -1,6 +1,9 @@
 package com.nhnacademy.eggplantdelivery.dto.request;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -8,9 +11,12 @@ import lombok.Setter;
  *
  * @version 1.0.0
  */
+@Builder
 @Getter
 @Setter
-public class OrderInfoRequestDto {
+@AllArgsConstructor
+@NoArgsConstructor
+public class OrderInfoDto {
 
     private String receiverName;
     private String receiverAddress;

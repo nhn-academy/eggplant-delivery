@@ -9,3 +9,20 @@ secure-key-manager:
   url: https://api-keymanager.cloud.toast.com
   app-key: mcXcTmrnbRezlila
   local-key: gaship
+
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:mem:~/h2/testdb;MODE=MYSQL
+    driver-class-name: org.h2.Driver
+    username: sa
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

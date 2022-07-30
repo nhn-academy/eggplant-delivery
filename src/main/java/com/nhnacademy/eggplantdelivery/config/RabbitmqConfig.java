@@ -6,6 +6,10 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -22,6 +26,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "rabbitmq")
 public class RabbitmqConfig {
+
+    public static final String ROUTING_EGGPLANT = "routing.Eggplant";
 
     private String host;
     private int port;
@@ -93,6 +99,23 @@ public class RabbitmqConfig {
     @Bean
     public MessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
+    }
+
+    @Bean
+    Queue queueEggplant() {
+        return new Queue("queue.Eggplant", false);
+    }
+
+    @Bean
+    DirectExchange exchange() {
+        return new DirectExchange("exchange.direct");
+    }
+
+    @Bean
+    Binding bindEggplant(Queue queueEggplant, DirectExchange exchange) {
+        return BindingBuilder.bind(queueEggplant)
+            .to(exchange)
+            .with(ROUTING_EGGPLANT);
     }
 
 }

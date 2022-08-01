@@ -67,6 +67,7 @@ public class AuthenticationConfig {
     String findSecretDataFromSecureKeyManager(final String keyId)
         throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException,
         UnrecoverableKeyException, KeyManagementException {
+
         KeyStore clientStore = KeyStore.getInstance("PKCS12");
         clientStore.load(new FileInputStream(ResourceUtils.getFile("classpath:github-action.p12")),
             localKey.toCharArray());
@@ -79,18 +80,19 @@ public class AuthenticationConfig {
         SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
             sslContextBuilder.build());
         CloseableHttpClient httpClient = HttpClients.custom()
-            .setSSLSocketFactory(sslConnectionSocketFactory)
-            .build();
+                                                    .setSSLSocketFactory(sslConnectionSocketFactory)
+                                                    .build();
         HttpComponentsClientHttpRequestFactory requestFactory =
             new HttpComponentsClientHttpRequestFactory(httpClient);
+
         return Objects.requireNonNull(new RestTemplate(requestFactory)
-                .getForEntity(url + "/keymanager/v1.0/appkey/{appkey}/secrets/{keyid}",
-                    SecureKeyResponseDto.class,
-                    this.appKey,
-                    keyId)
-                .getBody())
-            .getBody()
-            .getSecret();
+                          .getForEntity(url + "/keymanager/v1.0/appkey/{appkey}/secrets/{keyid}",
+                              SecureKeyResponseDto.class,
+                              this.appKey,
+                              keyId)
+                          .getBody())
+                      .getBody()
+                      .getSecret();
     }
 
 }

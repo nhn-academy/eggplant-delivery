@@ -4,7 +4,6 @@ import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoDto;
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import com.nhnacademy.eggplantdelivery.mapper.impl.DeliveryInfoMapper;
-import com.nhnacademy.eggplantdelivery.module.Receiver;
 import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
@@ -21,7 +20,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DefaultDeliveryService implements DeliveryService {
 
-    private  final DeliveryInfoRepository deliveryInfoRepository;
+    private final DeliveryInfoRepository deliveryInfoRepository;
     private final DeliveryInfoMapper deliveryInfoMapper;
     private final Sender sender;
 
@@ -34,6 +33,8 @@ public class DefaultDeliveryService implements DeliveryService {
         deliveryInfo.setStatus(Status.DELIVERING);
 
         deliveryInfoRepository.save(deliveryInfo);
+
+        sender.send(deliveryInfo.getTrackingNo());
     }
 
 }

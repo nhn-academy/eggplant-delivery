@@ -14,3 +14,4 @@ import org.mapstruct.Mapper;
 public interface DeliveryInfoMapper extends GenericMapper<OrderInfoDto, DeliveryInfo> {
 
 }
+

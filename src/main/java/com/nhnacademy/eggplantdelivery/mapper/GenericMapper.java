@@ -12,11 +12,11 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 public interface GenericMapper<D, E> {
 
-    D toDto(E e);
+    D toDto(final E e);
 
-    E toEntity(D d);
+    E toEntity(final D d);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
-    void createFromDto(D dto, @MappingTarget E entity);
+    void createFromDto(final D dto, @MappingTarget final E entity);
 
 }

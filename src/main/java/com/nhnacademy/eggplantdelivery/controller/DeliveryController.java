@@ -31,9 +31,8 @@ public class DeliveryController {
     @PostMapping("/tracking-no")
     public ResponseEntity<Void> createTrackingNo(@RequestBody final OrderInfoDto orderInfoDto) {
         sender.send(orderInfoDto);
-
         return ResponseEntity.status(HttpStatus.CREATED)
-            .build();
+                             .build();
     }
 
 }

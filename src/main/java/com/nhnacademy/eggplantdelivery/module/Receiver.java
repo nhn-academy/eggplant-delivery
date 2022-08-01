@@ -4,10 +4,6 @@ import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoDto;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.ExchangeTypes;
-import org.springframework.amqp.rabbit.annotation.Exchange;
-import org.springframework.amqp.rabbit.annotation.Queue;
-import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
@@ -23,12 +19,8 @@ public class Receiver {
 
     private final DeliveryService deliveryService;
 
-    @RabbitListener(bindings = @QueueBinding(
-        exchange = @Exchange(name = "exchange.direct", type = ExchangeTypes.DIRECT),
-        value = @Queue(name = "queue.Eggplant"),
-        key = "routing.Eggplant")
-    )
-    public void receive(OrderInfoDto orderInfoDto) {
+    @RabbitListener(queues = "queue.Eggplant")
+    public void receiveEggplant(final OrderInfoDto orderInfoDto) {
         deliveryService.createTrackingNo(orderInfoDto);
     }
 

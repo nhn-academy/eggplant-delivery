@@ -1,9 +1,9 @@
 package com.nhnacademy.eggplantdelivery.service.impl;
 
-import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoDto;
+import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
+import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
-import com.nhnacademy.eggplantdelivery.mapper.impl.DeliveryInfoMapper;
 import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
@@ -21,20 +21,27 @@ import org.springframework.stereotype.Service;
 public class DefaultDeliveryService implements DeliveryService {
 
     private final DeliveryInfoRepository deliveryInfoRepository;
-    private final DeliveryInfoMapper deliveryInfoMapper;
     private final Sender sender;
+    private final DeliveryAdaptor adaptor;
 
     @Override
-    public void createTrackingNo(final OrderInfoDto orderInfoDto) {
-        Long trackingNo = Long.parseLong(RandomStringUtils.random(16, false, true));
+    public void createTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
+        deliveryInfoRepository.save(DeliveryInfo.builder()
+                                                .trackingNo(Long.parseLong(RandomStringUtils.random(16, false, true)))
+                                                .status(Status.DELIVERING)
+                                                .receiverName(orderInfoRequestDto.getReceiverName())
+                                                .receiverAddress(orderInfoRequestDto.getReceiverAddress())
+                                                .receiverPhone(orderInfoRequestDto.getReceiverPhone())
+                                                .shopHost(orderInfoRequestDto.getShopHost())
+                                                .orderNo(orderInfoRequestDto.getOrderNo())
+                                                .build());
 
-        DeliveryInfo deliveryInfo = deliveryInfoMapper.toEntity(orderInfoDto);
-        deliveryInfo.setTrackingNo(trackingNo);
-        deliveryInfo.setStatus(Status.DELIVERING);
+        sender.sendTrackingNo(orderInfoRequestDto);
+    }
 
-        deliveryInfoRepository.save(deliveryInfo);
-
-        sender.send(deliveryInfo.getTrackingNo());
+    @Override
+    public void sendTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
+        adaptor.sendTrackingNo(orderInfoRequestDto);
     }
 
 }

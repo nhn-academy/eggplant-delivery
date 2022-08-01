@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * 배송정보 엔티티 입니다.
@@ -22,7 +21,6 @@ import lombok.Setter;
 @Table(name = "delivery_info")
 @Builder
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class DeliveryInfo {
@@ -49,7 +47,6 @@ public class DeliveryInfo {
 
     @Column(name = "order_no")
     private String orderNo;
-
 
 }
 

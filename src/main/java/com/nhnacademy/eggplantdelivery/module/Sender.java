@@ -20,4 +20,8 @@ public class Sender {
         rabbitTemplate.convertAndSend("exchange.direct", "routing.Eggplant", orderInfoDto);
     }
 
+    public void send(final Long trackingNo) {
+        rabbitTemplate.convertAndSend("exchange.direct", "routing.TrackingNo", trackingNo);
+    }
+
 }

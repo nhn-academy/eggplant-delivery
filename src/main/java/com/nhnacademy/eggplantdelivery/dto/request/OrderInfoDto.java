@@ -21,5 +21,7 @@ public class OrderInfoDto {
     private String receiverName;
     private String receiverAddress;
     private String receiverPhone;
+    private String shopHost;
+    private String orderNo;
 
 }

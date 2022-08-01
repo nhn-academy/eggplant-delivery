@@ -44,5 +44,12 @@ public class DeliveryInfo {
     @Column(name = "receiver_phone")
     private String receiverPhone;
 
+    @Column(name = "shop_host")
+    private String shopHost;
+
+    @Column(name = "order_no")
+    private String orderNo;
+
+
 }
 

@@ -1,5 +1,6 @@
 package com.nhnacademy.eggplantdelivery.dto.request;
 
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderInfoRequestDto {
 
-    private Long trackingNo;
+    private UUID trackingNo;
     private String receiverName;
     private String receiverAddress;
     private String receiverPhone;
@@ -22,7 +23,7 @@ public class OrderInfoRequestDto {
     private String shopHost;
     private Integer shopPort;
 
-    public void insertTrackingNo(Long createdTrackingNo) {
+    public void insertTrackingNo(UUID createdTrackingNo) {
         this.trackingNo = createdTrackingNo;
     }
 

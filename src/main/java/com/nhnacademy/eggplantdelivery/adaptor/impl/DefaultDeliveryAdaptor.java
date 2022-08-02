@@ -31,7 +31,6 @@ public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
                                        .build();
 
 
-        // FIXME: https://github.com/netty/netty/issues/11020 해당 오류 M1 이슈로 평가되는데 현재 개발에는 큰 문제가 없어보임 차후에 해결 해야함.
         webClient.post()
                  .uri(uriBuilder -> uriBuilder.path("/web-client/delivery/tracking-no")
                                               .build())
@@ -40,7 +39,7 @@ public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
                      if (clientResponse.statusCode().equals(HttpStatus.OK)) {
                          return clientResponse.bodyToMono(ResponseEntity.class);
                      } else {
-                         return null; // TODO : 에러 발생시 해결할 사항
+                         return null;
                      }
                  })
                  .block();

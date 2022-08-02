@@ -5,11 +5,14 @@ import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import com.nhnacademy.eggplantdelivery.module.Sender;
+import com.nhnacademy.eggplantdelivery.module.UUIDGenerator;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.RandomStringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 배송 요청과 Rabbit MQ 관련 로직을 처리하는 클래스 입니다.
@@ -18,18 +21,21 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DefaultDeliveryService implements DeliveryService {
 
     private final DeliveryInfoRepository deliveryInfoRepository;
     private final Sender sender;
     private final DeliveryAdaptor adaptor;
 
+    @Transactional
     @Override
     public void createTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
-        Long trackingNo = Long.parseLong(RandomStringUtils.random(16, false, true));
+        UUID trackingNo = UUIDGenerator.generateType5UUID(orderInfoRequestDto.getShopHost(),
+            orderInfoRequestDto.getOrderNo());
 
         deliveryInfoRepository.save(DeliveryInfo.builder()
-                                                .trackingNo(trackingNo)
+                                                .trackingNo(trackingNo.toString())
                                                 .status(Status.DELIVERING)
                                                 .receiverName(orderInfoRequestDto.getReceiverName())
                                                 .receiverAddress(orderInfoRequestDto.getReceiverAddress())

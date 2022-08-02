@@ -1,6 +1,6 @@
 package com.nhnacademy.eggplantdelivery.module;
 
-import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoDto;
+import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +20,13 @@ public class Receiver {
     private final DeliveryService deliveryService;
 
     @RabbitListener(queues = "queue.Eggplant")
-    public void receiveEggplant(final OrderInfoDto orderInfoDto) {
-        deliveryService.createTrackingNo(orderInfoDto);
+    public void receiveEggplant(final OrderInfoRequestDto orderInfoRequestDto) {
+        deliveryService.createTrackingNo(orderInfoRequestDto);
+    }
+
+    @RabbitListener(queues = "queue.TrackingNo")
+    public void receiveTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
+        deliveryService.sendTrackingNo(orderInfoRequestDto);
     }
 
 }

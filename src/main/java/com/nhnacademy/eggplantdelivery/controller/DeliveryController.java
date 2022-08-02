@@ -2,7 +2,9 @@ package com.nhnacademy.eggplantdelivery.controller;
 
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.module.Sender;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/eggplant-delivery")
 @RequiredArgsConstructor
+@Slf4j
 public class DeliveryController {
 
     private final Sender sender;
@@ -29,8 +32,13 @@ public class DeliveryController {
      * @return 운송장번호를 반환 합니다..
      */
     @PostMapping("/tracking-no")
-    public ResponseEntity<Void> createTrackingNo(@RequestBody final OrderInfoRequestDto orderInfoRequestDto) {
+    public ResponseEntity<Void> createTrackingNo(@RequestBody final OrderInfoRequestDto orderInfoRequestDto,
+                                                 HttpServletRequest servletRequest) {
+
+        orderInfoRequestDto.insertShopHost(servletRequest.getRemoteHost());
+        orderInfoRequestDto.insertShopPort(servletRequest.getServerPort());
         sender.send(orderInfoRequestDto);
+
         return ResponseEntity.status(HttpStatus.CREATED)
                              .build();
     }

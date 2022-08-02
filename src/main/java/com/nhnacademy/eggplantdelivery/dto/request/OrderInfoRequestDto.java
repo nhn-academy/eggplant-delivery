@@ -18,7 +18,19 @@ public class OrderInfoRequestDto {
     private String receiverName;
     private String receiverAddress;
     private String receiverPhone;
-    private String shopHost;
     private String orderNo;
+    private String shopHost;
+    private Integer shopPort;
 
+    public void insertTrackingNo(Long createdTrackingNo) {
+        this.trackingNo = createdTrackingNo;
+    }
+
+    public void insertShopHost(String shopHost) {
+        this.shopHost = shopHost;
+    }
+
+    public void insertShopPort(Integer shopPort) {
+        this.shopPort = shopPort;
+    }
 }

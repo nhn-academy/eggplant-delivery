@@ -25,7 +25,7 @@ public class Location {
     private Long locationNo;
 
     @ManyToOne
-    @JoinColumn(name = "slip_no")
+    @JoinColumn(name = "tracking_no")
     private DeliveryInfo deliveryInfo;
 
     @Column(name = "arrival_time")

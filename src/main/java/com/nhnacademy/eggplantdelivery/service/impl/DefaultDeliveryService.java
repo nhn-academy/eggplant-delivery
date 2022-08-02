@@ -26,16 +26,18 @@ public class DefaultDeliveryService implements DeliveryService {
 
     @Override
     public void createTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
+        Long trackingNo = Long.parseLong(RandomStringUtils.random(16, false, true));
+
         deliveryInfoRepository.save(DeliveryInfo.builder()
-                                                .trackingNo(Long.parseLong(RandomStringUtils.random(16, false, true)))
+                                                .trackingNo(trackingNo)
                                                 .status(Status.DELIVERING)
                                                 .receiverName(orderInfoRequestDto.getReceiverName())
                                                 .receiverAddress(orderInfoRequestDto.getReceiverAddress())
                                                 .receiverPhone(orderInfoRequestDto.getReceiverPhone())
-                                                .shopHost(orderInfoRequestDto.getShopHost())
                                                 .orderNo(orderInfoRequestDto.getOrderNo())
                                                 .build());
 
+        orderInfoRequestDto.insertTrackingNo(trackingNo);
         sender.sendTrackingNo(orderInfoRequestDto);
     }
 

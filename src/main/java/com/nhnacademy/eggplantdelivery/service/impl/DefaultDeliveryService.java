@@ -11,6 +11,7 @@ import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +32,7 @@ public class DefaultDeliveryService implements DeliveryService {
     @Transactional
     @Override
     public void createTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
-        UUID trackingNo = UUIDGenerator.generateType5UUID(orderInfoRequestDto.getShopHost(),
+        UUID trackingNo = UUIDGenerator.generateType5UUID(RandomStringUtils.random(32, true, false),
             orderInfoRequestDto.getOrderNo());
 
         deliveryInfoRepository.save(DeliveryInfo.builder()

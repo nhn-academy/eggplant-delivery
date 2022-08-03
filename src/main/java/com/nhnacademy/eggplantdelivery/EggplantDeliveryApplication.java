@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  * @version 1.0.0
  */
-@SuppressWarnings("checkstyle:SummaryJavadoc")
+
 @SpringBootApplication
 public class EggplantDeliveryApplication {
 

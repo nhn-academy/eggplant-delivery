@@ -1,9 +1,12 @@
 package com.nhnacademy.eggplantdelivery.service.impl;
 
 import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
+import com.nhnacademy.eggplantdelivery.dto.request.DeliveryInfoStatusRequestDto;
+import com.nhnacademy.eggplantdelivery.dto.request.DeliveryStatusUpdateRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
+import com.nhnacademy.eggplantdelivery.exception.DeliveryInfoNotFoundException;
 import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.module.UuidGenerator;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
@@ -38,7 +41,7 @@ public class DefaultDeliveryService implements DeliveryService {
 
         deliveryInfoRepository.save(DeliveryInfo.builder()
                                                 .trackingNo(trackingNo.toString())
-                                                .status(Status.DELIVERING)
+                                                .status(Status.READY)
                                                 .receiverName(orderInfoRequestDto.getReceiverName())
                                                 .receiverAddress(orderInfoRequestDto.getReceiverAddress())
                                                 .receiverPhone(orderInfoRequestDto.getReceiverPhone())
@@ -52,6 +55,21 @@ public class DefaultDeliveryService implements DeliveryService {
     @Override
     public void sendTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
         adaptor.sendTrackingNo(orderInfoRequestDto);
+    }
+
+    @Transactional
+    @Override
+    public void sendUpdateStatus(final DeliveryStatusUpdateRequestDto deliveryStatusUpdateRequestDto) {
+        DeliveryInfo deliveryInfo = deliveryInfoRepository.findById(deliveryStatusUpdateRequestDto.getTrackingNo())
+                                                          .orElseThrow(DeliveryInfoNotFoundException::new);
+
+        deliveryInfo.updateStatus(deliveryStatusUpdateRequestDto.getStatus());
+
+        adaptor.sendUpdateStatus(DeliveryInfoStatusRequestDto.builder()
+                                                             .trackingNo(deliveryInfo.getTrackingNo())
+                                                             .status(deliveryInfo.getStatus())
+                                                             .shopHost(deliveryInfo.getShopHost())
+                                                             .build());
     }
 
 }

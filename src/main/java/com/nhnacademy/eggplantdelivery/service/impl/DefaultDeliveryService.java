@@ -5,18 +5,20 @@ import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import com.nhnacademy.eggplantdelivery.module.Sender;
-import com.nhnacademy.eggplantdelivery.module.UUIDGenerator;
+import com.nhnacademy.eggplantdelivery.module.UuidGenerator;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 배송 요청과 Rabbit MQ 관련 로직을 처리하는 클래스 입니다.
  *
+ * @author 김훈민, 조재철
  * @version 1.0.0
  */
 @Service
@@ -31,7 +33,7 @@ public class DefaultDeliveryService implements DeliveryService {
     @Transactional
     @Override
     public void createTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
-        UUID trackingNo = UUIDGenerator.generateType5UUID(orderInfoRequestDto.getShopHost(),
+        UUID trackingNo = UuidGenerator.generateType5Uuid(RandomStringUtils.random(32, true, false),
             orderInfoRequestDto.getOrderNo());
 
         deliveryInfoRepository.save(DeliveryInfo.builder()

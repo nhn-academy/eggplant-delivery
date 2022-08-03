@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * RabbitMq와 관련된 설정을 하기 위한 클래스.
  *
+ * @author 김훈민, 조재철
  * @version 1.0.0
  */
 @Configuration
@@ -78,6 +79,7 @@ public class RabbitmqConfig {
      * @throws IOException               I/O 오류가 발생하는 경우에 throw 되는 예외 발생.
      * @throws NoSuchAlgorithmException  암호 알고리즘이 요구되었음에도 불구하고, 현재의 환경에서는 사용 가능하지 않은 경우에 예외 발생.
      * @throws KeyManagementException    키 관리를 다루는 모든 작업에 대한 일반적인 키 관리 예외 발생.
+     * @author 김훈민, 조재철
      */
     @Bean
     public ConnectionFactory connectionFactory(final AuthenticationConfig authenticationConfig)

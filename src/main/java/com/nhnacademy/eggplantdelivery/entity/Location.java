@@ -7,12 +7,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
  * 배송위치 엔티티 입니다.
  *
+ * @author 김훈민, 조재철
  * @version 1.0.0
  */
 @Entity

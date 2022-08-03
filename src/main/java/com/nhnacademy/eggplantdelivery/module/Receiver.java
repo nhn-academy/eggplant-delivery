@@ -1,5 +1,6 @@
 package com.nhnacademy.eggplantdelivery.module;
 
+import com.nhnacademy.eggplantdelivery.dto.request.DeliveryStatusUpdateRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,11 @@ public class Receiver {
     @RabbitListener(queues = "queue.TrackingNo")
     public void receiveTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
         deliveryService.sendTrackingNo(orderInfoRequestDto);
+    }
+
+    @RabbitListener(queues = "queue.UpdateStatus")
+    public void receiveCompletionStatus(final DeliveryStatusUpdateRequestDto deliveryStatusUpdateRequestDto) {
+        deliveryService.sendUpdateStatus(deliveryStatusUpdateRequestDto);
     }
 
 }

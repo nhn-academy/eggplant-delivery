@@ -3,6 +3,7 @@ package com.nhnacademy.eggplantdelivery.controller;
 import com.nhnacademy.eggplantdelivery.dto.request.DeliveryStatusUpdateRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.module.Sender;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,9 +48,12 @@ public class DeliveryController {
                              .build();
     }
 
-    @PatchMapping("/delivery-completion")
-    public ResponseEntity<Void> updateDeliveryCompletion(@RequestBody final DeliveryStatusUpdateRequestDto deliveryStatusUpdateRequestDto) {
-        sender.sendCompletionStatus(deliveryStatusUpdateRequestDto);
+    @PatchMapping("/delivery-update")
+    public ResponseEntity<Void> updateDeliveryUpdate(@RequestBody final List<DeliveryStatusUpdateRequestDto> deliveryStatusUpdateRequestDto) {
+        sender.sendUpdateStatus(deliveryStatusUpdateRequestDto);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                             .build();
     }
 
 }

@@ -30,7 +30,7 @@ public class RabbitmqConfig {
 
     public static final String ROUTING_EGGPLANT = "routing.Eggplant";
     public static final String ROUTING_TRACKING_NO = "routing.TrackingNo";
-    public static final String ROUTING_COMPLETION_STATUS = "routing.DeliveryStatus";
+    public static final String ROUTING_UPDATE_STATUS = "routing.UpdateStatus";
     private String host;
     private int port;
     private String username;
@@ -116,8 +116,8 @@ public class RabbitmqConfig {
     }
 
     @Bean
-    Queue queueCompletionStatus() {
-        return new Queue("queue.CompletionStatus", false);
+    Queue queueUpdateStatus() {
+        return new Queue("queue.UpdateStatus", false);
     }
 
     @Bean
@@ -144,10 +144,10 @@ public class RabbitmqConfig {
     }
 
     @Bean
-    Binding bindCompletionStatus(final Queue queueCompletionStatus,
+    Binding bindCompletionStatus(final Queue queueUpdateStatus,
                                  final DirectExchange exchange) {
 
-        return BindingBuilder.bind(queueCompletionStatus)
+        return BindingBuilder.bind(queueUpdateStatus)
                              .to(exchange)
                              .with(ROUTING_TRACKING_NO);
     }

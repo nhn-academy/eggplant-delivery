@@ -10,7 +10,7 @@ import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import com.nhnacademy.eggplantdelivery.module.Sender;
-import com.nhnacademy.eggplantdelivery.module.UUIDGenerator;
+import com.nhnacademy.eggplantdelivery.module.UuidGenerator;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import java.util.UUID;
@@ -54,7 +54,7 @@ class DefaultDeliveryServiceTest {
     void testCreateTrackingNo() {
         String nameSpace = RandomStringUtils.random(32, true, true);
 
-        UUID trackingNo = UUIDGenerator.generateType5UUID(nameSpace,
+        UUID trackingNo = UuidGenerator.generateType5Uuid(nameSpace,
             orderInfoRequestDto.getShopHost() + orderInfoRequestDto.getOrderNo());
 
         DeliveryInfo deliveryInfo = DeliveryInfo.builder()

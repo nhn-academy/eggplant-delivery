@@ -24,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 /**
  * secure key 와 관련된 설정을 위한 class.
  *
+ * @author 김훈민, 조재철
  * @version 1.0.0
  */
 @Configuration

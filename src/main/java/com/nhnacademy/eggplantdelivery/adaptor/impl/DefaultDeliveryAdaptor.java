@@ -13,6 +13,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 /**
  * 배송 요청을 한 서버에 응답을 하는 클래스 입니다.
  *
+ * @author 김훈민, 조재철
  * @version 1.0.0
  */
 @Component
@@ -43,7 +44,6 @@ public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
                      }
                  })
                  .block();
-
     }
 
 }

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 /**
  * 주문정보 요청 Dto 입니다.
  *
+ * @author 김훈민, 조재철
  * @version 1.0.0
  */
 @Getter
@@ -34,4 +35,5 @@ public class OrderInfoRequestDto {
     public void insertShopPort(Integer shopPort) {
         this.shopPort = shopPort;
     }
+
 }

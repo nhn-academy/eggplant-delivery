@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 /**
  * 배송정보 엔티티 입니다.
  *
+ * @author 김훈민, 조재철
  * @version 1.0.0
  */
 @Entity

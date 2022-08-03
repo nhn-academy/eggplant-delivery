@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 배송 요청관련 처리를 위한 컨트롤러 입니다.
  *
+ * @author 김훈민, 조재철
  * @version 1.0.0
  */
 @RestController
@@ -29,7 +30,8 @@ public class DeliveryController {
      * 운송장번호를 생성 요청을 처리하는 컨트롤러 메서드 입니다.
      *
      * @param orderInfoRequestDto 쇼핑몰 서버에서 넘어온 주문 정보입니다.
-     * @return 운송장번호를 반환 합니다..
+     * @return 운송장번호를 반환 합니다.
+     * @author 김훈민, 조재철
      */
     @PostMapping("/tracking-no")
     public ResponseEntity<Void> createTrackingNo(@RequestBody final OrderInfoRequestDto orderInfoRequestDto,

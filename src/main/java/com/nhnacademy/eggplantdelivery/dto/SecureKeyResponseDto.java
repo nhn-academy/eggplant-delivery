@@ -5,6 +5,7 @@ import lombok.Getter;
 /**
  * SecureKey 에 대한 정보를 받고 다른 객체에 전달하기 위한 Dto 입니다.
  *
+ * @author 김훈민, 조재철
  * @version 1.0.0
  */
 @Getter

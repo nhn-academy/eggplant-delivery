@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 /**
  * RabbitMQ 에 MessageQueue 에서 데이터를 받는 클래스 입니다.
  *
+ * @author 김훈민, 조재철
  * @version 1.0.0
  */
 @RequiredArgsConstructor

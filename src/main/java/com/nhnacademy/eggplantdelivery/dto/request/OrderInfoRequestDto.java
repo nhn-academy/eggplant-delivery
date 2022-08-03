@@ -23,15 +23,15 @@ public class OrderInfoRequestDto {
     private String shopHost;
     private Integer shopPort;
 
-    public void insertTrackingNo(UUID createdTrackingNo) {
+    public void insertTrackingNo(final UUID createdTrackingNo) {
         this.trackingNo = createdTrackingNo;
     }
 
-    public void insertShopHost(String shopHost) {
+    public void insertShopHost(final String shopHost) {
         this.shopHost = shopHost;
     }
 
-    public void insertShopPort(Integer shopPort) {
+    public void insertShopPort(final Integer shopPort) {
         this.shopPort = shopPort;
     }
 }

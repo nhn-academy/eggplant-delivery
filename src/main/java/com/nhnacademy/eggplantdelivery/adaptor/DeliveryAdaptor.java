@@ -1,5 +1,6 @@
 package com.nhnacademy.eggplantdelivery.adaptor;
 
+import com.nhnacademy.eggplantdelivery.dto.request.DeliveryInfoStatusRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 
 /**
@@ -10,5 +11,7 @@ import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
  */
 public interface DeliveryAdaptor {
     void sendTrackingNo(final OrderInfoRequestDto orderInfoRequestDto);
+
+    void sendUpdateStatus(final DeliveryInfoStatusRequestDto deliveryStatusUpdateRequestDto);
 
 }

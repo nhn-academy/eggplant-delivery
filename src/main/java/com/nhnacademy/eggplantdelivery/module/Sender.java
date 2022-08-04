@@ -1,6 +1,8 @@
 package com.nhnacademy.eggplantdelivery.module;
 
+import com.nhnacademy.eggplantdelivery.dto.request.DeliveryStatusUpdateRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
@@ -15,14 +17,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class Sender {
 
+    private static final String DELIVERY_EXCHANGE = "exchange.direct";
     private final RabbitTemplate rabbitTemplate;
 
     public void send(final OrderInfoRequestDto orderInfoRequestDto) {
-        rabbitTemplate.convertAndSend("exchange.direct", "routing.Eggplant", orderInfoRequestDto);
+        rabbitTemplate.convertAndSend(DELIVERY_EXCHANGE, "routing.Eggplant", orderInfoRequestDto);
     }
 
     public void sendTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
-        rabbitTemplate.convertAndSend("exchange.direct", "routing.TrackingNo", orderInfoRequestDto);
+        rabbitTemplate.convertAndSend(DELIVERY_EXCHANGE, "routing.TrackingNo", orderInfoRequestDto);
+    }
+
+    public void sendUpdateStatus(final List<DeliveryStatusUpdateRequestDto> deliveryStatusUpdateRequestDto) {
+        for (DeliveryStatusUpdateRequestDto statusUpdateRequestDto : deliveryStatusUpdateRequestDto) {
+            rabbitTemplate.convertAndSend(DELIVERY_EXCHANGE, "routing.UpdateStatus",
+                statusUpdateRequestDto);
+        }
     }
 
 }

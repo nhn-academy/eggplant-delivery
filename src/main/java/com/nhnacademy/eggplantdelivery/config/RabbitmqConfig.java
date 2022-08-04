@@ -30,7 +30,7 @@ public class RabbitmqConfig {
 
     public static final String ROUTING_EGGPLANT = "routing.Eggplant";
     public static final String ROUTING_TRACKING_NO = "routing.TrackingNo";
-
+    public static final String ROUTING_UPDATE_STATUS = "routing.UpdateStatus";
     private String host;
     private int port;
     private String username;
@@ -116,6 +116,11 @@ public class RabbitmqConfig {
     }
 
     @Bean
+    Queue queueUpdateStatus() {
+        return new Queue("queue.UpdateStatus", false);
+    }
+
+    @Bean
     DirectExchange exchange() {
         return new DirectExchange("exchange.direct");
     }
@@ -134,6 +139,15 @@ public class RabbitmqConfig {
                            final DirectExchange exchange) {
 
         return BindingBuilder.bind(queueTrackingNo)
+                             .to(exchange)
+                             .with(ROUTING_TRACKING_NO);
+    }
+
+    @Bean
+    Binding bindCompletionStatus(final Queue queueUpdateStatus,
+                                 final DirectExchange exchange) {
+
+        return BindingBuilder.bind(queueUpdateStatus)
                              .to(exchange)
                              .with(ROUTING_TRACKING_NO);
     }

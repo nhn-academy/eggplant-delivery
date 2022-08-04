@@ -8,6 +8,7 @@ package com.nhnacademy.eggplantdelivery.entity.status;
  */
 public enum Status {
 
+    READY,
     DELIVERING,
     ARRIVAL
 

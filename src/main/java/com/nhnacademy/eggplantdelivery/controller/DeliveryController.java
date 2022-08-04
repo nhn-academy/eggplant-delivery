@@ -1,12 +1,15 @@
 package com.nhnacademy.eggplantdelivery.controller;
 
+import com.nhnacademy.eggplantdelivery.dto.request.DeliveryStatusUpdateRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.module.Sender;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +45,14 @@ public class DeliveryController {
         sender.send(orderInfoRequestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
+                             .build();
+    }
+
+    @PatchMapping("/delivery-update")
+    public ResponseEntity<Void> updateDeliveryUpdate(@RequestBody final List<DeliveryStatusUpdateRequestDto> deliveryStatusUpdateRequestDto) {
+        sender.sendUpdateStatus(deliveryStatusUpdateRequestDto);
+
+        return ResponseEntity.status(HttpStatus.OK)
                              .build();
     }
 

@@ -1,6 +1,7 @@
 package com.nhnacademy.eggplantdelivery.adaptor.impl;
 
 import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
+import com.nhnacademy.eggplantdelivery.dto.request.DeliveryInfoStatusRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -36,6 +37,27 @@ public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
                  .uri(uriBuilder -> uriBuilder.path("/web-client/delivery/tracking-no")
                                               .build())
                  .bodyValue(orderInfoRequestDto.getTrackingNo())
+                 .exchangeToMono(clientResponse -> {
+                     if (clientResponse.statusCode().equals(HttpStatus.OK)) {
+                         return clientResponse.bodyToMono(ResponseEntity.class);
+                     } else {
+                         return null;
+                     }
+                 })
+                 .block();
+    }
+
+    @Override
+    public void sendUpdateStatus(final DeliveryInfoStatusRequestDto deliveryStatusUpdateRequestDto) {
+        WebClient webClient = WebClient.builder()
+                                       .baseUrl(PROTOCOL + deliveryStatusUpdateRequestDto.getShopHost() + ":8080")
+                                       .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                                       .build();
+
+        webClient.patch()
+                 .uri(uriBuilder -> uriBuilder.path("/web-client/delivery/delivery-update")
+                                              .build())
+                 .bodyValue(deliveryStatusUpdateRequestDto.getStatus())
                  .exchangeToMono(clientResponse -> {
                      if (clientResponse.statusCode().equals(HttpStatus.OK)) {
                          return clientResponse.bodyToMono(ResponseEntity.class);

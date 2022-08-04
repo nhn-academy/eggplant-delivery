@@ -53,5 +53,8 @@ public class DeliveryInfo {
     @Column(name = "order_no")
     private String orderNo;
 
+    public void updateStatus(final Status status) {
+        this.status = status;
+    }
 }
 

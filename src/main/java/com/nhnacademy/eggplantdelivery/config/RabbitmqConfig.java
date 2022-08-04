@@ -69,7 +69,7 @@ public class RabbitmqConfig {
     }
 
     /**
-     * RabbitMq 연결 설정을 하기위한 클래스.
+     * RabbitMq 연결 설정을 하기위한 빈 입니다.
      *
      * @param authenticationConfig secure key 와 관련된 설정을 위한 객체.
      * @return 연결 설정하는 ConnectionFactory 반환.

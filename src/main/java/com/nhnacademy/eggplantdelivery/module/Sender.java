@@ -28,6 +28,11 @@ public class Sender {
         rabbitTemplate.convertAndSend(DELIVERY_EXCHANGE, "routing.TrackingNo", orderInfoRequestDto);
     }
 
+    /**
+     * 파라미터로 전달된 배송 상태 수정 객체를 Queue 에 담기 위한 메소드 입니다.
+     *
+     * @param deliveryStatusUpdateRequestDto 배송 상태, 운송장 번호를 담은 요청 Dto 입니다.
+     */
     public void sendUpdateStatus(final List<DeliveryStatusUpdateRequestDto> deliveryStatusUpdateRequestDto) {
         for (DeliveryStatusUpdateRequestDto statusUpdateRequestDto : deliveryStatusUpdateRequestDto) {
             rabbitTemplate.convertAndSend(DELIVERY_EXCHANGE, "routing.UpdateStatus",

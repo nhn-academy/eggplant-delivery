@@ -10,6 +10,12 @@ import java.util.List;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Query DSL 메서드의 구현체 클래스 입니다.
+ *
+ * @author 김훈민, 조재철
+ * @version 1.0.0
+ */
 @Repository
 public class DeliveryInfoRepositoryImpl extends QuerydslRepositorySupport implements CustomDeliveryRepository {
 

@@ -6,6 +6,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * 배송 정보 수정을 위한 응답 Dto 입니다.
+ *
+ * @author 김훈민, 조재철
+ * @version 1.0.0
+ */
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

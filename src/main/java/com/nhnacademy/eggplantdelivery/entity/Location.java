@@ -8,7 +8,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
@@ -40,6 +39,11 @@ public class Location {
     @Column(name = "arrival_time")
     private LocalDateTime arrivalTime;
 
+    /**
+     * Location 고유키, 복합키를 담은 클래스 입니다.
+     *
+     * @author 김훈민, 조재철
+     */
     @Embeddable
     @NoArgsConstructor
     @AllArgsConstructor

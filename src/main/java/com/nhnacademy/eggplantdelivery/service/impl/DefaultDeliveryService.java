@@ -65,6 +65,7 @@ public class DefaultDeliveryService implements DeliveryService {
         DeliveryInfo deliveryInfo = deliveryInfoRepository.findById(deliveryStatusUpdateRequestDto.getTrackingNo())
                                                           .orElseThrow(DeliveryInfoNotFoundException::new);
 
+
         deliveryInfo.updateStatus(deliveryStatusUpdateRequestDto.getStatus());
 
         adaptor.sendUpdateStatus(DeliveryInfoStatusRequestDto.builder()

@@ -15,6 +15,7 @@
     <description>eggplant-delivery</description>
     <properties>
         <java.version>11</java.version>
+        <jacoco.version>0.8.8</jacoco.version>
     </properties>
     <dependencies>
         <dependency>
@@ -122,11 +123,33 @@
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-jpa</artifactId>
         </dependency>
-        
+
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>

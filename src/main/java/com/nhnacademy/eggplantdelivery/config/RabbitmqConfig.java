@@ -31,7 +31,7 @@ public class RabbitmqConfig {
     public static final String ROUTING_EGGPLANT = "routing.Eggplant";
     public static final String ROUTING_TRACKING_NO = "routing.TrackingNo";
     public static final String ROUTING_UPDATE_STATUS = "routing.UpdateStatus";
-    public static final String ROUTING_DELIVERY_ARRIVAL = "routing.DeliveryArrival"
+    public static final String ROUTING_DELIVERY_ARRIVAL = "routing.DeliveryArrival";
     private String host;
     private int port;
     private String username;

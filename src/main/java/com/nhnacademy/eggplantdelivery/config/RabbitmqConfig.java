@@ -31,6 +31,7 @@ public class RabbitmqConfig {
     public static final String ROUTING_EGGPLANT = "routing.Eggplant";
     public static final String ROUTING_TRACKING_NO = "routing.TrackingNo";
     public static final String ROUTING_UPDATE_STATUS = "routing.UpdateStatus";
+    public static final String ROUTING_DELIVERY_ARRIVAL = "routing.DeliveryArrival"
     private String host;
     private int port;
     private String username;
@@ -121,13 +122,18 @@ public class RabbitmqConfig {
     }
 
     @Bean
+    Queue queueDeliveryArrival() {
+        return new Queue("queue.DeliveryArrival", false);
+    }
+
+    @Bean
     DirectExchange exchange() {
         return new DirectExchange("exchange.direct");
     }
 
     @Bean
     Binding bindEggplant(final Queue queueEggplant,
-                         final DirectExchange exchange) {
+        final DirectExchange exchange) {
 
         return BindingBuilder.bind(queueEggplant)
                              .to(exchange)
@@ -136,7 +142,7 @@ public class RabbitmqConfig {
 
     @Bean
     Binding bindTrackingNo(final Queue queueTrackingNo,
-                           final DirectExchange exchange) {
+        final DirectExchange exchange) {
 
         return BindingBuilder.bind(queueTrackingNo)
                              .to(exchange)
@@ -145,11 +151,20 @@ public class RabbitmqConfig {
 
     @Bean
     Binding bindCompletionStatus(final Queue queueUpdateStatus,
-                                 final DirectExchange exchange) {
+        final DirectExchange exchange) {
 
         return BindingBuilder.bind(queueUpdateStatus)
                              .to(exchange)
-                             .with(ROUTING_TRACKING_NO);
+                             .with(ROUTING_UPDATE_STATUS);
+    }
+
+    @Bean
+    Binding bindDeliveryArrival(final Queue queueDeliveryArrival,
+        final DirectExchange exchange) {
+
+        return BindingBuilder.bind(queueDeliveryArrival)
+            .to(exchange)
+            .with(ROUTING_DELIVERY_ARRIVAL);
     }
 
 }

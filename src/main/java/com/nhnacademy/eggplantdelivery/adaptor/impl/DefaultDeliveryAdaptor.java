@@ -27,8 +27,7 @@ public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
     public void sendTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
 
         WebClient webClient = WebClient.builder()
-                                       .baseUrl(PROTOCOL + orderInfoRequestDto.getShopHost() + ":"
-                                           + orderInfoRequestDto.getShopPort())
+                                       .baseUrl(PROTOCOL + orderInfoRequestDto.getShopHost() + ":8080")
                                        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                                        .build();
 

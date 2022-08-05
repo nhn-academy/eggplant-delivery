@@ -45,7 +45,6 @@ public class DeliveryController {
                                                  HttpServletRequest servletRequest) {
 
         orderInfoRequestDto.insertShopHost(servletRequest.getRemoteHost());
-        orderInfoRequestDto.insertShopPort(servletRequest.getServerPort());
         sender.send(orderInfoRequestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)

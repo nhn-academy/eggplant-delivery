@@ -53,7 +53,7 @@ class DeliveryControllerTest {
         doNothing().when(service).sendTrackingNo(any(OrderInfoRequestDto.class));
 
         OrderInfoRequestDto orderInfoRequestDto = new OrderInfoRequestDto(
-            null, "1", "1", "1", "1", "1", 1);
+            null, "1", "1", "1", "1", "1");
 
         String jsonRequest = mapper.writeValueAsString(orderInfoRequestDto);
 

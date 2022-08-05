@@ -29,15 +29,16 @@ class UuidVer5GeneratorTest {
     @Test
     @DisplayName("ver5 Uuid 를 만들어 내는 코드 입니다.")
     void testNameUuidFromNamespaceAndBytesThrownByNoSuchAlgorithmException() throws NoSuchAlgorithmException {
+        try (MockedStatic<MessageDigest> mockedStatic = mockStatic(MessageDigest.class)) {
+            mockedStatic.when((MockedStatic.Verification) MessageDigest.getInstance(anyString()))
+                        .thenThrow(new NoSuchAlgorithmException());
+            byte[] bytes = ("Host" + "OrderNo").getBytes(StandardCharsets.UTF_8);
+            assertThatThrownBy(() ->
+                UuidVer5Generator.ver5UuidFromNamespaceAndBytes(bytes)
+            ).isInstanceOf(InternalError.class)
+             .hasMessageContaining("SHA-256 not supported");
+        }
 
-        MockedStatic<MessageDigest> mockedStatic = mockStatic(MessageDigest.class);
-        mockedStatic.when((MockedStatic.Verification) MessageDigest.getInstance(anyString()))
-                    .thenThrow(new NoSuchAlgorithmException());
-        byte[] bytes = ("Host" + "OrderNo").getBytes(StandardCharsets.UTF_8);
-        assertThatThrownBy(() ->
-            UuidVer5Generator.ver5UuidFromNamespaceAndBytes(bytes)
-        ).isInstanceOf(InternalError.class)
-         .hasMessageContaining("SHA-256 not supported");
     }
 
 }

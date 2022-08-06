@@ -76,9 +76,4 @@ public class DefaultDeliveryService implements DeliveryService {
                                                              .build());
     }
 
-    @Override
-    public List<DeliveryInfoStatusResponseDto> retrieveDeliveryStatus() {
-        return deliveryInfoRepository.retrieveDeliveryStatus();
-    }
-
 }

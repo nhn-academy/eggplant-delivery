@@ -68,15 +68,4 @@ public class DeliveryController {
                              .build();
     }
 
-    /**
-     * 배송상태 조회를 위한 컨트롤러 메서드 입니다.
-     *
-     * @return 특정 조건을 만족한 배송상태를 담은 Response 객체 List 입니다.
-     * @author 김훈민, 조재철
-     */
-    @GetMapping("/delivery-info-status")
-    public ResponseEntity<List<DeliveryInfoStatusResponseDto>> retrieveDeliveryStatus() {
-        return ResponseEntity.ok(service.retrieveDeliveryStatus());
-    }
-
 }

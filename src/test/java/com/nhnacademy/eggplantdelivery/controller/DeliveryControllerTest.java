@@ -88,21 +88,4 @@ class DeliveryControllerTest {
                .andExpect(status().isOk());
     }
 
-    @Test
-    @DisplayName("배송 상태 조회")
-    void testRetrieveDeliveryStatus() throws Exception {
-        DeliveryInfoStatusResponseDto deliveryInfoStatusResponseDto = new DeliveryInfoStatusResponseDto();
-        List<DeliveryInfoStatusResponseDto> deliveryInfoStatusResponseDtoList = List.of(deliveryInfoStatusResponseDto);
-
-        when(service.retrieveDeliveryStatus()).thenReturn(deliveryInfoStatusResponseDtoList);
-
-        String jsonRequest = mapper.writeValueAsString(deliveryInfoStatusResponseDtoList);
-
-        mockMvc.perform(get("/eggplant-delivery/delivery-info-status")
-            .contentType(APPLICATION_JSON)
-            .content(jsonRequest))
-            .andExpect(status().isOk());
-
-    }
-
 }

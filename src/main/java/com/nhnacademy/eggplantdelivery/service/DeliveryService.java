@@ -19,6 +19,4 @@ public interface DeliveryService {
 
     void sendUpdateStatus(final DeliveryStatusUpdateRequestDto deliveryStatusUpdateRequestDto);
 
-    List<DeliveryInfoStatusResponseDto> retrieveDeliveryStatus();
-
 }

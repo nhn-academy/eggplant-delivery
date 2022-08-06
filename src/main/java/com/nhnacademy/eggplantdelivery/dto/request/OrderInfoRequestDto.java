@@ -22,7 +22,6 @@ public class OrderInfoRequestDto {
     private String receiverPhone;
     private String orderNo;
     private String shopHost;
-    private Integer shopPort;
 
     public void insertTrackingNo(UUID createdTrackingNo) {
         this.trackingNo = createdTrackingNo;
@@ -30,10 +29,6 @@ public class OrderInfoRequestDto {
 
     public void insertShopHost(String shopHost) {
         this.shopHost = shopHost;
-    }
-
-    public void insertShopPort(Integer shopPort) {
-        this.shopPort = shopPort;
     }
 
 }

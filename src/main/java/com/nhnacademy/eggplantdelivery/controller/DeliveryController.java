@@ -2,13 +2,16 @@ package com.nhnacademy.eggplantdelivery.controller;
 
 import com.nhnacademy.eggplantdelivery.dto.request.DeliveryStatusUpdateRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
+import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
 import com.nhnacademy.eggplantdelivery.module.Sender;
+import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +32,8 @@ public class DeliveryController {
 
     private final Sender sender;
 
+    private final DeliveryService service;
+
     /**
      * 운송장번호를 생성 요청을 처리하는 컨트롤러 메서드 입니다.
      *
@@ -41,19 +46,37 @@ public class DeliveryController {
                                                  HttpServletRequest servletRequest) {
 
         orderInfoRequestDto.insertShopHost(servletRequest.getRemoteHost());
-        orderInfoRequestDto.insertShopPort(servletRequest.getServerPort());
         sender.send(orderInfoRequestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                              .build();
     }
 
-    @PatchMapping("/delivery-update")
-    public ResponseEntity<Void> updateDeliveryUpdate(@RequestBody final List<DeliveryStatusUpdateRequestDto> deliveryStatusUpdateRequestDto) {
+    /**
+     * 배송상태 정보를 수정하기 위한 컨트롤러 메서드 입니다.
+     *
+     * @param deliveryStatusUpdateRequestDto 배송상태 수정을 위한 상태와 운송장 번호를 담은 객체 List 입니다.
+     * @return 상태코드를 반환합니다.
+     * @author 김훈민, 조재철
+     */
+    @PatchMapping("/delivery-info-status")
+    public ResponseEntity<Void> updateDeliveryUpdate(
+        @RequestBody final List<DeliveryStatusUpdateRequestDto> deliveryStatusUpdateRequestDto) {
         sender.sendUpdateStatus(deliveryStatusUpdateRequestDto);
 
         return ResponseEntity.status(HttpStatus.OK)
                              .build();
+    }
+
+    /**
+     * 배송상태 조회를 위한 컨트롤러 메서드 입니다.
+     *
+     * @return 특정 조건을 만족한 배송상태를 담은 Response 객체 List 입니다.
+     * @author 김훈민, 조재철
+     */
+    @GetMapping("/delivery-info-status")
+    public ResponseEntity<List<DeliveryInfoStatusResponseDto>> retrieveDeliveryStatus() {
+        return ResponseEntity.ok(service.retrieveDeliveryStatus());
     }
 
 }

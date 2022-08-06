@@ -15,6 +15,7 @@
     <description>eggplant-delivery</description>
     <properties>
         <java.version>11</java.version>
+        <jacoco.version>0.8.8</jacoco.version>
     </properties>
     <dependencies>
         <dependency>
@@ -100,12 +101,6 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.mockito/mockito-inline -->
         <dependency>
             <groupId>org.mockito</groupId>
@@ -113,15 +108,66 @@
             <version>4.6.1</version>
             <scope>test</scope>
         </dependency>
-        
+
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.18.18</version>
+            </plugin>
+
+            <plugin>
+                <groupId>com.mysema.maven</groupId>
+                <artifactId>apt-maven-plugin</artifactId>
+                <version>1.1.3</version>
+                <configuration>
+                    <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/generated-sources/annotations</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

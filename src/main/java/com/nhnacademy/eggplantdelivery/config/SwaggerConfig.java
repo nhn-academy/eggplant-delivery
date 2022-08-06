@@ -13,8 +13,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 /**
  * Swagger 관련 설정을 하기 위한 클래스.
  *
- * @version 1.0.0
  * @author 김훈민, 조재철
+ * @version 1.0.0
  */
 @Configuration
 @EnableSwagger2

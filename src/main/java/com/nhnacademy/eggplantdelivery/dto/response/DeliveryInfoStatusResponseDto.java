@@ -1,4 +1,4 @@
-package com.nhnacademy.eggplantdelivery.dto.request;
+package com.nhnacademy.eggplantdelivery.dto.response;
 
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * 수정된 배송정보 전송을 위한 Dto 입니다.
+ * 배송 정보 수정을 위한 응답 Dto 입니다.
  *
  * @author 김훈민, 조재철
  * @version 1.0.0
@@ -16,10 +16,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DeliveryInfoStatusRequestDto {
+public class DeliveryInfoStatusResponseDto {
 
     private String trackingNo;
     private Status status;
-    private String shopHost;
 
 }

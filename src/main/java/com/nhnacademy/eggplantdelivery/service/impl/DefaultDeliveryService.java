@@ -4,17 +4,19 @@ import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
 import com.nhnacademy.eggplantdelivery.dto.request.DeliveryInfoStatusRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.DeliveryStatusUpdateRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
+import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import com.nhnacademy.eggplantdelivery.exception.DeliveryInfoNotFoundException;
 import com.nhnacademy.eggplantdelivery.module.Sender;
-import com.nhnacademy.eggplantdelivery.module.UuidGenerator;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
+import com.nhnacademy.eggplantdelivery.utill.UuidVer5Generator;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,8 +38,8 @@ public class DefaultDeliveryService implements DeliveryService {
     @Transactional
     @Override
     public void createTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
-        UUID trackingNo = UuidGenerator.generateType5Uuid(RandomStringUtils.random(32, true, false),
-            orderInfoRequestDto.getOrderNo());
+        UUID trackingNo = UuidVer5Generator.ver5UuidFromNamespaceAndBytes(
+            (orderInfoRequestDto.getShopHost() + orderInfoRequestDto.getOrderNo()).getBytes(StandardCharsets.UTF_8));
 
         deliveryInfoRepository.save(DeliveryInfo.builder()
                                                 .trackingNo(trackingNo.toString())
@@ -46,6 +48,7 @@ public class DefaultDeliveryService implements DeliveryService {
                                                 .receiverAddress(orderInfoRequestDto.getReceiverAddress())
                                                 .receiverPhone(orderInfoRequestDto.getReceiverPhone())
                                                 .orderNo(orderInfoRequestDto.getOrderNo())
+                                                .shopHost(orderInfoRequestDto.getShopHost())
                                                 .build());
 
         orderInfoRequestDto.insertTrackingNo(trackingNo);
@@ -63,6 +66,7 @@ public class DefaultDeliveryService implements DeliveryService {
         DeliveryInfo deliveryInfo = deliveryInfoRepository.findById(deliveryStatusUpdateRequestDto.getTrackingNo())
                                                           .orElseThrow(DeliveryInfoNotFoundException::new);
 
+
         deliveryInfo.updateStatus(deliveryStatusUpdateRequestDto.getStatus());
 
         adaptor.sendUpdateStatus(DeliveryInfoStatusRequestDto.builder()
@@ -70,6 +74,11 @@ public class DefaultDeliveryService implements DeliveryService {
                                                              .status(deliveryInfo.getStatus())
                                                              .shopHost(deliveryInfo.getShopHost())
                                                              .build());
+    }
+
+    @Override
+    public List<DeliveryInfoStatusResponseDto> retrieveDeliveryStatus() {
+        return deliveryInfoRepository.retrieveDeliveryStatus();
     }
 
 }

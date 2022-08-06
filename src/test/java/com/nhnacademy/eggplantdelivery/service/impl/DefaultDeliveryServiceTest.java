@@ -123,16 +123,4 @@ class DefaultDeliveryServiceTest {
 
     }
 
-    @Test
-    void testRetrieveDeliveryStatus() {
-        List<DeliveryInfoStatusResponseDto> deliveryInfoStatusResponseDtos =
-            List.of(new DeliveryInfoStatusResponseDto());
-        when(deliveryInfoRepository.retrieveDeliveryStatus()).thenReturn(deliveryInfoStatusResponseDtos);
-
-        List<DeliveryInfoStatusResponseDto> deliveryInfoStatusResponseDtoList = service.retrieveDeliveryStatus();
-
-        assertThat(deliveryInfoStatusResponseDtoList).isEqualTo(deliveryInfoStatusResponseDtos);
-        verify(deliveryInfoRepository).retrieveDeliveryStatus();
-    }
-
 }

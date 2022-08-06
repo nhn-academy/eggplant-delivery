@@ -19,6 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
+
     /**
      * Swagger 설정의 핵심으로 문서화 객체를 빈으로 등록하는 메서드.
      *

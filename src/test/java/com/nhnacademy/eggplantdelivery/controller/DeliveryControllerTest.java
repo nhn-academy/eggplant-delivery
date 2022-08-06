@@ -1,17 +1,24 @@
 package com.nhnacademy.eggplantdelivery.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nhnacademy.eggplantdelivery.dto.request.DeliveryStatusUpdateRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
+import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
 import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -61,6 +68,40 @@ class DeliveryControllerTest {
                    .contentType(APPLICATION_JSON)
                    .content(jsonRequest))
                .andExpect(status().isCreated());
+
+    }
+
+    @Test
+    @DisplayName("배송 상태 수정")
+    void testUpdateDeliveryUpdate() throws Exception {
+        DeliveryStatusUpdateRequestDto deliveryStatusUpdateRequestDto = new DeliveryStatusUpdateRequestDto();
+        List<DeliveryStatusUpdateRequestDto> deliveryStatusUpdateRequestDtoList =
+            List.of(deliveryStatusUpdateRequestDto);
+
+        doNothing().when(sender).sendUpdateStatus(anyList());
+
+        String jsonRequest = mapper.writeValueAsString(deliveryStatusUpdateRequestDtoList);
+
+        mockMvc.perform(patch("/eggplant-delivery/delivery-info-status")
+                   .contentType(APPLICATION_JSON)
+                   .content(jsonRequest))
+               .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("배송 상태 조회")
+    void testRetrieveDeliveryStatus() throws Exception {
+        DeliveryInfoStatusResponseDto deliveryInfoStatusResponseDto = new DeliveryInfoStatusResponseDto();
+        List<DeliveryInfoStatusResponseDto> deliveryInfoStatusResponseDtoList = List.of(deliveryInfoStatusResponseDto);
+
+        when(service.retrieveDeliveryStatus()).thenReturn(deliveryInfoStatusResponseDtoList);
+
+        String jsonRequest = mapper.writeValueAsString(deliveryInfoStatusResponseDtoList);
+
+        mockMvc.perform(get("/eggplant-delivery/delivery-info-status")
+            .contentType(APPLICATION_JSON)
+            .content(jsonRequest))
+            .andExpect(status().isOk());
 
     }
 

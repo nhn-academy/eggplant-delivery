@@ -1,6 +1,7 @@
 package com.nhnacademy.eggplantdelivery.service.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
@@ -13,6 +14,7 @@ import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
+import com.nhnacademy.eggplantdelivery.exception.DeliveryInfoNotFoundException;
 import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
@@ -23,6 +25,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +62,7 @@ class DefaultDeliveryServiceTest {
     }
 
     @Test
+    @DisplayName("운송장 번호 만들기")
     void testCreateTrackingNo() {
         UUID uuid = UuidVer5Generator.ver5UuidFromNamespaceAndBytes(("Host" + "OrderNo").getBytes(
             StandardCharsets.UTF_8));
@@ -83,15 +87,25 @@ class DefaultDeliveryServiceTest {
     }
 
     @Test
+    @DisplayName("만들어진 운송장 번호 전송")
     void testSendTrackingNo() {
-        doNothing().when(deliveryAdaptor).sendTrackingNo(orderInfoRequestDto);
+        UUID uuid = UuidVer5Generator.ver5UuidFromNamespaceAndBytes(("Host" + "OrderNo").getBytes(
+            StandardCharsets.UTF_8));
 
-        service.sendTrackingNo(orderInfoRequestDto);
+        OrderInfoRequestDto infoRequestDto = new OrderInfoRequestDto(uuid, orderInfoRequestDto.getReceiverName(),
+            orderInfoRequestDto.getReceiverAddress(),
+            orderInfoRequestDto.getReceiverPhone(), orderInfoRequestDto.getOrderNo(),
+            orderInfoRequestDto.getShopHost());
 
-        verify(deliveryAdaptor).sendTrackingNo(orderInfoRequestDto);
+        doNothing().when(deliveryAdaptor).sendTrackingNo(infoRequestDto);
+
+        service.sendTrackingNo(infoRequestDto);
+
+        verify(deliveryAdaptor).sendTrackingNo(infoRequestDto);
     }
 
     @Test
+    @DisplayName("배송 상태 수정 후 전송")
     void testSendUpdateStatus() {
         UUID uuid = UuidVer5Generator.ver5UuidFromNamespaceAndBytes(("Host" + "OrderNo").getBytes(
             StandardCharsets.UTF_8));
@@ -124,6 +138,7 @@ class DefaultDeliveryServiceTest {
     }
 
     @Test
+    @DisplayName("배송 상태 확인후 전송")
     void testRetrieveDeliveryStatus() {
         List<DeliveryInfoStatusResponseDto> deliveryInfoStatusResponseDtos =
             List.of(new DeliveryInfoStatusResponseDto());
@@ -133,6 +148,19 @@ class DefaultDeliveryServiceTest {
 
         assertThat(deliveryInfoStatusResponseDtoList).isEqualTo(deliveryInfoStatusResponseDtos);
         verify(deliveryInfoRepository).retrieveDeliveryStatus();
+    }
+
+    @Test
+    @DisplayName("배송정보 찾기 실패 예외처리")
+    void testSendUpdateStatusThrownByDeliveryInfoNotFoundException() {
+        DeliveryStatusUpdateRequestDto requestDto = new DeliveryStatusUpdateRequestDto("Un Known Id", Status.READY);
+
+        when(deliveryInfoRepository.findById(any())).thenThrow(new DeliveryInfoNotFoundException());
+
+        assertThatThrownBy(() ->
+            service.sendUpdateStatus(requestDto)
+        ).isInstanceOf(DeliveryInfoNotFoundException.class)
+         .hasMessageContaining("해당 배송정보는 없습니다.");
     }
 
 }

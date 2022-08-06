@@ -6,6 +6,7 @@ import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDt
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -17,6 +18,7 @@ class DeliveryInfoRepositoryImplTest {
     DeliveryInfoRepository deliveryInfoRepository;
 
     @Test
+    @DisplayName("배송 정보 상태를 담은 리스트를 반환하는 레포지토리")
     void retrieveDeliveryStatus() {
         DeliveryInfo deliveryInfo = DeliveryInfo.builder()
                                                 .trackingNo("1")

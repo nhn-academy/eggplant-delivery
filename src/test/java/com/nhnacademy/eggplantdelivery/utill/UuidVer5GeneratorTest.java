@@ -27,7 +27,7 @@ class UuidVer5GeneratorTest {
     }
 
     @Test
-    @DisplayName("ver5 Uuid 를 만들어 내는 코드 입니다.")
+    @DisplayName("지원하지 않는 암호화 방식 사용시 에러 처리")
     void testNameUuidFromNamespaceAndBytesThrownByNoSuchAlgorithmException() throws NoSuchAlgorithmException {
         try (MockedStatic<MessageDigest> mockedStatic = mockStatic(MessageDigest.class)) {
             mockedStatic.when((MockedStatic.Verification) MessageDigest.getInstance(anyString()))

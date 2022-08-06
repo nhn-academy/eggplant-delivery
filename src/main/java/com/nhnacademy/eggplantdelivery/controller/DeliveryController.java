@@ -2,7 +2,6 @@ package com.nhnacademy.eggplantdelivery.controller;
 
 import com.nhnacademy.eggplantdelivery.dto.request.DeliveryStatusUpdateRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
-import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
 import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import java.util.List;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,7 +41,7 @@ public class DeliveryController {
      */
     @PostMapping("/tracking-no")
     public ResponseEntity<Void> createTrackingNo(@RequestBody final OrderInfoRequestDto orderInfoRequestDto,
-                                                 HttpServletRequest servletRequest) {
+        HttpServletRequest servletRequest) {
 
         orderInfoRequestDto.insertShopHost(servletRequest.getRemoteHost());
         sender.send(orderInfoRequestDto);

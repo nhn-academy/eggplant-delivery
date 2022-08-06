@@ -10,6 +10,7 @@ import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
  * @version 1.0.0
  */
 public interface DeliveryAdaptor {
+
     void sendTrackingNo(final OrderInfoRequestDto orderInfoRequestDto);
 
     void sendUpdateStatus(final DeliveryInfoStatusRequestDto deliveryStatusUpdateRequestDto);

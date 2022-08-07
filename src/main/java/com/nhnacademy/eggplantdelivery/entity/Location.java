@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -37,6 +38,7 @@ public class Location {
     private DeliveryInfo deliveryInfo;
 
     @Column(name = "arrival_time")
+    @NotNull(message = "도착시간은 필수 입니다.")
     private LocalDateTime arrivalTime;
 
     /**
@@ -53,9 +55,11 @@ public class Location {
 
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "location_no")
+        @NotNull(message = "위치 번호는 필수 입니다.")
         private Long locationNo;
 
         @Column(name = "tracking_no")
+        @NotNull(message = "운송장 번호는 필수 입니다.")
         private String trackingNo;
 
     }

@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * 배송 요청과 Rabbit MQ 관련 로직을 처리하는 클래스 입니다.
@@ -60,7 +61,7 @@ public class DefaultDeliveryService implements DeliveryService {
 
     @Transactional
     @Override
-    public void sendUpdateStatus(final DeliveryStatusUpdateRequestDto deliveryStatusUpdateRequestDto) {
+    public void sendUpdateStatus(@Validated final DeliveryStatusUpdateRequestDto deliveryStatusUpdateRequestDto) {
         DeliveryInfo deliveryInfo = deliveryInfoRepository.findById(deliveryStatusUpdateRequestDto.getTrackingNo())
                                                           .orElseThrow(DeliveryInfoNotFoundException::new);
 

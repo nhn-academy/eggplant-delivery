@@ -1,8 +1,10 @@
 package com.nhnacademy.eggplantdelivery.dto.request;
 
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
+import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * 배송상태 수정을 위한 요청 Dto 입니다.
@@ -14,7 +16,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DeliveryStatusUpdateRequestDto {
 
+    @NotBlank(message = "운송장 번호가 유효하지 않습니다.")
     private String trackingNo;
+
     private Status status;
 
 }

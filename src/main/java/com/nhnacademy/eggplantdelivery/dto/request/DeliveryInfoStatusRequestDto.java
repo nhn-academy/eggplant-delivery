@@ -1,6 +1,7 @@
 package com.nhnacademy.eggplantdelivery.dto.request;
 
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,8 +19,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DeliveryInfoStatusRequestDto {
 
+    @NotBlank(message = "운송장 번호가 유효하지 않습니다.")
     private String trackingNo;
+
     private Status status;
+
+    @NotBlank(message = "해당 쇼핑몰 host 주소는 필수 입니다.")
     private String shopHost;
 
 }

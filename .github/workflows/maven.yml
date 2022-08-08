@@ -50,4 +50,4 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script_stop: true
-        script: "./front_startup.sh"
+        script: "./eggplant_delivery.sh"

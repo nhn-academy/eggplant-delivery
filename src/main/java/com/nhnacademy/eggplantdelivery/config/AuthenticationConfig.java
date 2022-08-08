@@ -15,8 +15,11 @@ import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.client.RestTemplate;
@@ -70,8 +73,8 @@ public class AuthenticationConfig {
         UnrecoverableKeyException, KeyManagementException {
 
         KeyStore clientStore = KeyStore.getInstance("PKCS12");
-        clientStore.load(new FileInputStream(ResourceUtils.getFile("classpath:github-action.p12")),
-            localKey.toCharArray());
+        Resource resource = new ClassPathResource("/github-action.p12");
+        clientStore.load(resource.getInputStream(), localKey.toCharArray());
 
         SSLContextBuilder sslContextBuilder = new SSLContextBuilder();
         sslContextBuilder.setProtocol("TLS");

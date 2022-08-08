@@ -19,9 +19,9 @@ spring:
 
   profiles:
     group:
-      local: "common, testdb"
-      dev: "common, devdb"
-      prod: "common, proddb"
+      local: common, testdb
+      dev: common, devdb
+      prod: common, proddb
 
 datasource:
   driver-class-name: com.mysql.cj.jdbc.Driver
@@ -34,7 +34,7 @@ datasource:
 spring:
   config:
     activate:
-      on-profile: "common"
+      on-profile: common
 
 datasource:
   driver-class-name: com.mysql.cj.jdbc.Driver
@@ -47,7 +47,7 @@ datasource:
 spring:
   config:
     activate:
-      on-profile: "testdb"
+      on-profile: testdb
 
 datasource:
   driver-class-name: com.mysql.cj.jdbc.Driver
@@ -60,7 +60,7 @@ datasource:
 spring:
   config:
     activate:
-      on-profile: "proddb"
+      on-profile: proddb
 
 datasource:
   driver-class-name: com.mysql.cj.jdbc.Driver

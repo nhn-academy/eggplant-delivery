@@ -1,6 +1,7 @@
 package com.nhnacademy.eggplantdelivery.adaptor.impl;
 
 import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
+import com.nhnacademy.eggplantdelivery.dto.request.CreatedTrackingNoDto;
 import com.nhnacademy.eggplantdelivery.dto.request.DeliveryInfoStatusRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,9 @@ public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
     @Override
     public void sendTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
 
+        CreatedTrackingNoDto createdTrackingNoDto =
+            new CreatedTrackingNoDto(orderInfoRequestDto.getTrackingNo().toString(), orderInfoRequestDto.getOrderNo());
+
         WebClient webClient = WebClient.builder()
                                        .baseUrl(PROTOCOL + orderInfoRequestDto.getShopHost() + ":8080")
                                        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -33,9 +37,9 @@ public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
 
 
         webClient.post()
-                 .uri(uriBuilder -> uriBuilder.path("/web-client/delivery/tracking-no")
+                 .uri(uriBuilder -> uriBuilder.path("/eggplant/tracking-no")
                                               .build())
-                 .bodyValue(orderInfoRequestDto.getTrackingNo())
+                 .bodyValue(createdTrackingNoDto)
                  .exchangeToMono(clientResponse -> {
                      if (clientResponse.statusCode().equals(HttpStatus.OK)) {
                          return clientResponse.bodyToMono(ResponseEntity.class);

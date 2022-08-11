@@ -28,7 +28,8 @@ datasource:
   url: 2016554d23614b28b1ffb17e68a0d640
   username: eggplant
   password: e55472d5d7ea4bbdb6f3149e1ed597e5
-
+server:
+  port: 9090
 ---
 
 spring:

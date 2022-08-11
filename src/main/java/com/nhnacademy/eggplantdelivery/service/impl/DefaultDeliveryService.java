@@ -10,8 +10,10 @@ import com.nhnacademy.eggplantdelivery.exception.DeliveryInfoNotFoundException;
 import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
+import com.nhnacademy.eggplantdelivery.utill.AesGenerator;
 import com.nhnacademy.eggplantdelivery.utill.UuidGenerator;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,21 +35,27 @@ public class DefaultDeliveryService implements DeliveryService {
     private final DeliveryInfoRepository deliveryInfoRepository;
     private final Sender sender;
     private final DeliveryAdaptor adaptor;
+    private final AesGenerator aesGenerator;
 
     @Transactional
     @Override
     public void createTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
         UUID trackingNo = UuidGenerator.ver5UuidFromNamespaceAndBytes(
-            (orderInfoRequestDto.getShopHost() + orderInfoRequestDto.getOrderNo()).getBytes(StandardCharsets.UTF_8));
+            (orderInfoRequestDto.getShopHost() + orderInfoRequestDto.getOrderNo() + LocalDateTime.now()).getBytes(
+                StandardCharsets.UTF_8));
 
         deliveryInfoRepository.save(DeliveryInfo.builder()
                                                 .trackingNo(trackingNo.toString())
                                                 .status(Status.READY)
-                                                .receiverName(orderInfoRequestDto.getReceiverName())
-                                                .receiverAddress(orderInfoRequestDto.getReceiverAddress())
-                                                .receiverPhone(orderInfoRequestDto.getReceiverPhone())
                                                 .orderNo(orderInfoRequestDto.getOrderNo())
-                                                .shopHost(orderInfoRequestDto.getShopHost())
+                                                .receiverName(
+                                                    aesGenerator.aesEcbDecode(orderInfoRequestDto.getReceiverName()))
+                                                .receiverAddress(
+                                                    aesGenerator.aesEcbDecode(orderInfoRequestDto.getReceiverAddress()))
+                                                .receiverPhone(
+                                                    aesGenerator.aesEcbDecode(orderInfoRequestDto.getReceiverPhone()))
+                                                .shopHost(
+                                                    aesGenerator.aesEcbDecode(orderInfoRequestDto.getShopHost()))
                                                 .build());
 
         orderInfoRequestDto.insertTrackingNo(trackingNo);

@@ -5,6 +5,7 @@ import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import reactor.util.annotation.Nullable;
 
 /**
  * 주문정보 요청 Dto 입니다.
@@ -17,6 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderInfoRequestDto {
 
+    @Nullable
     private UUID trackingNo;
 
     @NotBlank(message = "수취인 이름은 필수 입니다.")
@@ -31,6 +33,7 @@ public class OrderInfoRequestDto {
     @NotBlank(message = "해당 주문에 대한 주문 번호는 필수 입니다.")
     private String orderNo;
 
+    @Nullable
     private String shopHost;
 
     public void insertTrackingNo(final UUID createdTrackingNo) {

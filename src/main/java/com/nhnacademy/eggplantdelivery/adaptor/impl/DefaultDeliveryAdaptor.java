@@ -4,6 +4,7 @@ import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
 import com.nhnacademy.eggplantdelivery.dto.request.CreatedTrackingNoDto;
 import com.nhnacademy.eggplantdelivery.dto.request.DeliveryInfoStatusRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,8 @@ public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
     public void sendTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
 
         CreatedTrackingNoDto createdTrackingNoDto =
-            new CreatedTrackingNoDto(orderInfoRequestDto.getTrackingNo().toString(), orderInfoRequestDto.getOrderNo());
+            new CreatedTrackingNoDto(Objects.requireNonNull(orderInfoRequestDto.getTrackingNo()).toString(),
+                orderInfoRequestDto.getOrderNo());
 
         WebClient webClient = WebClient.builder()
                                        .baseUrl(PROTOCOL + orderInfoRequestDto.getShopHost() + ":8080")

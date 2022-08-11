@@ -38,7 +38,6 @@ class UuidGeneratorTest {
             ).isInstanceOf(InternalError.class)
              .hasMessageContaining("SHA-256 not supported");
         }
-
     }
 
 }

@@ -1,6 +1,7 @@
 package com.nhnacademy.eggplantdelivery.config;
 
 import com.nhnacademy.eggplantdelivery.dto.SecureKeyResponseDto;
+import com.nhnacademy.eggplantdelivery.exception.FindSecretDataFromSecureKeyManagerException;
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
@@ -15,6 +16,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -34,6 +36,7 @@ public class AuthenticationConfig {
     private String url;
     private String appKey;
     private String localKey;
+    private String userInfoProtectionKey;
 
     public String getUrl() {
         return url;
@@ -59,41 +62,56 @@ public class AuthenticationConfig {
         this.localKey = localKey;
     }
 
+    public String getUserInfoProtectionKey() {
+        return userInfoProtectionKey;
+    }
+
+    public void setUserInfoProtectionKey(String userInfoProtectionKey) {
+        this.userInfoProtectionKey = userInfoProtectionKey;
+    }
+
     /**
      * nhn cloud key manager 에 secure key 를 얻기 위한 메서드.
      *
      * @param keyId secure key 를 얻기 위해 필요한 key id.
      * @return 원하는 secure key 를 반환.
      */
-    String findSecretDataFromSecureKeyManager(final String keyId)
-        throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException,
-        UnrecoverableKeyException, KeyManagementException {
+    String findSecretDataFromSecureKeyManager(final String keyId) {
+        try {
+            KeyStore clientStore = KeyStore.getInstance("PKCS12");
+            Resource resource = new ClassPathResource("/github-action.p12");
+            clientStore.load(resource.getInputStream(), localKey.toCharArray());
 
-        KeyStore clientStore = KeyStore.getInstance("PKCS12");
-        Resource resource = new ClassPathResource("/github-action.p12");
-        clientStore.load(resource.getInputStream(), localKey.toCharArray());
+            SSLContextBuilder sslContextBuilder = new SSLContextBuilder();
+            sslContextBuilder.setProtocol("TLS");
+            sslContextBuilder.loadKeyMaterial(clientStore, localKey.toCharArray());
+            sslContextBuilder.loadTrustMaterial(new TrustSelfSignedStrategy());
 
-        SSLContextBuilder sslContextBuilder = new SSLContextBuilder();
-        sslContextBuilder.setProtocol("TLS");
-        sslContextBuilder.loadKeyMaterial(clientStore, localKey.toCharArray());
-        sslContextBuilder.loadTrustMaterial(new TrustSelfSignedStrategy());
+            SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
+                sslContextBuilder.build());
+            CloseableHttpClient httpClient = HttpClients.custom()
+                                                        .setSSLSocketFactory(sslConnectionSocketFactory)
+                                                        .build();
+            HttpComponentsClientHttpRequestFactory requestFactory =
+                new HttpComponentsClientHttpRequestFactory(httpClient);
 
-        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
-            sslContextBuilder.build());
-        CloseableHttpClient httpClient = HttpClients.custom()
-                                                    .setSSLSocketFactory(sslConnectionSocketFactory)
-                                                    .build();
-        HttpComponentsClientHttpRequestFactory requestFactory =
-            new HttpComponentsClientHttpRequestFactory(httpClient);
+            return Objects.requireNonNull(new RestTemplate(requestFactory)
+                              .getForEntity(url + "/keymanager/v1.0/appkey/{appkey}/secrets/{keyid}",
+                                  SecureKeyResponseDto.class,
+                                  this.appKey,
+                                  keyId)
+                              .getBody())
+                          .getBody()
+                          .getSecret();
+        } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException
+                 | UnrecoverableKeyException | IOException | KeyManagementException e) {
+            throw new FindSecretDataFromSecureKeyManagerException();
+        }
+    }
 
-        return Objects.requireNonNull(new RestTemplate(requestFactory)
-                          .getForEntity(url + "/keymanager/v1.0/appkey/{appkey}/secrets/{keyid}",
-                              SecureKeyResponseDto.class,
-                              this.appKey,
-                              keyId)
-                          .getBody())
-                      .getBody()
-                      .getSecret();
+    @Bean
+    public String userInformationProtectionValue() {
+        return findSecretDataFromSecureKeyManager(userInfoProtectionKey);
     }
 
 }

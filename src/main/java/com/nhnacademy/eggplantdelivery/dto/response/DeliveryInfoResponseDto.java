@@ -1,6 +1,5 @@
 package com.nhnacademy.eggplantdelivery.dto.response;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

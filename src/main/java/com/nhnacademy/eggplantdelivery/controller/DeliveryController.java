@@ -30,8 +30,6 @@ public class DeliveryController {
 
     private final Sender sender;
 
-    private final DeliveryService service;
-
     /**
      * 운송장번호를 생성 요청을 처리하는 컨트롤러 메서드 입니다.
      *

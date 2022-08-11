@@ -10,6 +10,9 @@ secure-key-manager:
   app-key: mcXcTmrnbRezlila
   local-key: gaship
 
+aes:
+  algorithm: AES/ECB/PKCS5Padding
+
 spring:
   mvc:
     pathmatch:

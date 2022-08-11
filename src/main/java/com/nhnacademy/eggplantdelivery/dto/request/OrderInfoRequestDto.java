@@ -31,14 +31,13 @@ public class OrderInfoRequestDto {
     @NotBlank(message = "해당 주문에 대한 주문 번호는 필수 입니다.")
     private String orderNo;
 
-    @NotBlank(message = "해당 쇼핑몰 host 주소는 필수 입니다.")
     private String shopHost;
 
-    public void insertTrackingNo(UUID createdTrackingNo) {
+    public void insertTrackingNo(final UUID createdTrackingNo) {
         this.trackingNo = createdTrackingNo;
     }
 
-    public void insertShopHost(String shopHost) {
+    public void insertShopHost(final String shopHost) {
         this.shopHost = shopHost;
     }
 

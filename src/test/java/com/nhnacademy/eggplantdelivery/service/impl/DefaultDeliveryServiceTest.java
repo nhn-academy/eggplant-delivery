@@ -10,15 +10,13 @@ import static org.mockito.Mockito.when;
 import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
 import com.nhnacademy.eggplantdelivery.dto.request.DeliveryStatusUpdateRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
-import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
-import com.nhnacademy.eggplantdelivery.utill.UuidVer5Generator;
+import com.nhnacademy.eggplantdelivery.utill.UuidGenerator;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -60,7 +58,7 @@ class DefaultDeliveryServiceTest {
 
     @Test
     void testCreateTrackingNo() {
-        UUID uuid = UuidVer5Generator.ver5UuidFromNamespaceAndBytes(("Host" + "OrderNo").getBytes(
+        UUID uuid = UuidGenerator.ver5UuidFromNamespaceAndBytes(("Host" + "OrderNo").getBytes(
             StandardCharsets.UTF_8));
 
         DeliveryInfo deliveryInfo = DeliveryInfo.builder()
@@ -93,7 +91,7 @@ class DefaultDeliveryServiceTest {
 
     @Test
     void testSendUpdateStatus() {
-        UUID uuid = UuidVer5Generator.ver5UuidFromNamespaceAndBytes(("Host" + "OrderNo").getBytes(
+        UUID uuid = UuidGenerator.ver5UuidFromNamespaceAndBytes(("Host" + "OrderNo").getBytes(
             StandardCharsets.UTF_8));
 
         DeliveryInfo deliveryInfo = DeliveryInfo.builder()

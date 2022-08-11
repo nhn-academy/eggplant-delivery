@@ -41,7 +41,7 @@ public class DeliveryController {
      */
     @PostMapping("/tracking-no")
     public ResponseEntity<Void> createTrackingNo(@RequestBody final OrderInfoRequestDto orderInfoRequestDto,
-        HttpServletRequest servletRequest) {
+                                                 final HttpServletRequest servletRequest) {
 
         orderInfoRequestDto.insertShopHost(servletRequest.getRemoteHost());
         sender.send(orderInfoRequestDto);

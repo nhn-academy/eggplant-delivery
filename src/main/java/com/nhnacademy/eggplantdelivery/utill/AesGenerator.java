@@ -9,18 +9,24 @@ import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+/**
+ * 개인정보를 Aes 알고리즘 방식을 사용해 암호화 하는 유틸리티 클래스 입니다.
+ *
+ * @author 김훈민, 조재철
+ * @version  1.0.0
+ */
 @Component
-public class Aes {
+public class AesGenerator {
     private final SecretKeySpec secretKeySpec;
     private final String transformation;
 
     /**
      * Aes 객체를 생성하기 위한 생성자입니다.
      *
-     * @param userInformationProtectionValue salt를 위한 일반 텍스트 문자열입니다.
+     * @param userInformationProtectionValue salt 를 위한 일반 텍스트 문자열입니다.
      */
-    public Aes(String userInformationProtectionValue,
-               @Value("${aes.algorithm}") String transformation) {
+    public AesGenerator(String userInformationProtectionValue,
+                        @Value("${aes.algorithm}") String transformation) {
         this.secretKeySpec =
             new SecretKeySpec(userInformationProtectionValue.getBytes(StandardCharsets.UTF_8),
                 "AES");
@@ -67,5 +73,5 @@ public class Aes {
             throw new DecodeFailureException();
         }
     }
-}
 
+}

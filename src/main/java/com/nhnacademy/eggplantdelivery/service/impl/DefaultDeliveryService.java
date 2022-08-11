@@ -10,7 +10,7 @@ import com.nhnacademy.eggplantdelivery.exception.DeliveryInfoNotFoundException;
 import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
-import com.nhnacademy.eggplantdelivery.utill.UuidVer5Generator;
+import com.nhnacademy.eggplantdelivery.utill.UuidGenerator;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,7 @@ public class DefaultDeliveryService implements DeliveryService {
     @Transactional
     @Override
     public void createTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
-        UUID trackingNo = UuidVer5Generator.ver5UuidFromNamespaceAndBytes(
+        UUID trackingNo = UuidGenerator.ver5UuidFromNamespaceAndBytes(
             (orderInfoRequestDto.getShopHost() + orderInfoRequestDto.getOrderNo()).getBytes(StandardCharsets.UTF_8));
 
         deliveryInfoRepository.save(DeliveryInfo.builder()

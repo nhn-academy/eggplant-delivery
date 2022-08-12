@@ -4,7 +4,6 @@ import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
 import com.nhnacademy.eggplantdelivery.dto.request.DeliveryInfoStatusRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.DeliveryStatusUpdateRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
-import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import com.nhnacademy.eggplantdelivery.exception.DeliveryInfoNotFoundException;
@@ -13,12 +12,12 @@ import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import com.nhnacademy.eggplantdelivery.utill.UuidVer5Generator;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * 배송 요청과 Rabbit MQ 관련 로직을 처리하는 클래스 입니다.
@@ -62,7 +61,7 @@ public class DefaultDeliveryService implements DeliveryService {
 
     @Transactional
     @Override
-    public void sendUpdateStatus(final DeliveryStatusUpdateRequestDto deliveryStatusUpdateRequestDto) {
+    public void sendUpdateStatus(@Validated final DeliveryStatusUpdateRequestDto deliveryStatusUpdateRequestDto) {
         DeliveryInfo deliveryInfo = deliveryInfoRepository.findById(deliveryStatusUpdateRequestDto.getTrackingNo())
                                                           .orElseThrow(DeliveryInfoNotFoundException::new);
 
@@ -74,11 +73,6 @@ public class DefaultDeliveryService implements DeliveryService {
                                                              .status(deliveryInfo.getStatus())
                                                              .shopHost(deliveryInfo.getShopHost())
                                                              .build());
-    }
-
-    @Override
-    public List<DeliveryInfoStatusResponseDto> retrieveDeliveryStatus() {
-        return deliveryInfoRepository.retrieveDeliveryStatus();
     }
 
 }

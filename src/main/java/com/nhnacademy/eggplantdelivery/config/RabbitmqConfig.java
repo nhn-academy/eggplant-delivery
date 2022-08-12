@@ -163,8 +163,8 @@ public class RabbitmqConfig {
         final DirectExchange exchange) {
 
         return BindingBuilder.bind(queueDeliveryArrival)
-            .to(exchange)
-            .with(ROUTING_DELIVERY_ARRIVAL);
+                             .to(exchange)
+                             .with(ROUTING_DELIVERY_ARRIVAL);
     }
 
 }

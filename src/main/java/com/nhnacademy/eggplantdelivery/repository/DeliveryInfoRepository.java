@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author 김훈민, 조재철
  * @version 1.0.0
  */
-public interface DeliveryInfoRepository extends JpaRepository<DeliveryInfo, String>, CustomDeliveryRepository {
+public interface DeliveryInfoRepository extends JpaRepository<DeliveryInfo, String> {
 
 }

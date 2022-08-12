@@ -1,7 +1,5 @@
 package com.nhnacademy.eggplantdelivery.service.impl;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
@@ -11,16 +9,13 @@ import static org.mockito.Mockito.when;
 import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
 import com.nhnacademy.eggplantdelivery.dto.request.DeliveryStatusUpdateRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
-import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
-import com.nhnacademy.eggplantdelivery.exception.DeliveryInfoNotFoundException;
 import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import com.nhnacademy.eggplantdelivery.utill.UuidVer5Generator;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -134,33 +129,6 @@ class DefaultDeliveryServiceTest {
         service.sendUpdateStatus(deliveryStatusUpdateRequestDto);
 
         verify(deliveryAdaptor).sendUpdateStatus(any());
-
-    }
-
-    @Test
-    @DisplayName("배송 상태 확인후 전송")
-    void testRetrieveDeliveryStatus() {
-        List<DeliveryInfoStatusResponseDto> deliveryInfoStatusResponseDtos =
-            List.of(new DeliveryInfoStatusResponseDto());
-        when(deliveryInfoRepository.retrieveDeliveryStatus()).thenReturn(deliveryInfoStatusResponseDtos);
-
-        List<DeliveryInfoStatusResponseDto> deliveryInfoStatusResponseDtoList = service.retrieveDeliveryStatus();
-
-        assertThat(deliveryInfoStatusResponseDtoList).isEqualTo(deliveryInfoStatusResponseDtos);
-        verify(deliveryInfoRepository).retrieveDeliveryStatus();
-    }
-
-    @Test
-    @DisplayName("배송정보 찾기 실패 예외처리")
-    void testSendUpdateStatusThrownByDeliveryInfoNotFoundException() {
-        DeliveryStatusUpdateRequestDto requestDto = new DeliveryStatusUpdateRequestDto("Un Known Id", Status.READY);
-
-        when(deliveryInfoRepository.findById(any())).thenThrow(new DeliveryInfoNotFoundException());
-
-        assertThatThrownBy(() ->
-            service.sendUpdateStatus(requestDto)
-        ).isInstanceOf(DeliveryInfoNotFoundException.class)
-         .hasMessageContaining("해당 배송정보는 없습니다.");
     }
 
 }

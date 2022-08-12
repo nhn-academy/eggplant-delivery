@@ -5,7 +5,6 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -13,7 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.eggplantdelivery.dto.request.DeliveryStatusUpdateRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
-import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
 import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
@@ -82,22 +80,6 @@ class DeliveryControllerTest {
         String jsonRequest = mapper.writeValueAsString(deliveryStatusUpdateRequestDtoList);
 
         mockMvc.perform(patch("/eggplant-delivery/delivery-info-status")
-                   .contentType(APPLICATION_JSON)
-                   .content(jsonRequest))
-               .andExpect(status().isOk());
-    }
-
-    @Test
-    @DisplayName("배송 상태 조회")
-    void testRetrieveDeliveryStatus() throws Exception {
-        DeliveryInfoStatusResponseDto deliveryInfoStatusResponseDto = new DeliveryInfoStatusResponseDto();
-        List<DeliveryInfoStatusResponseDto> deliveryInfoStatusResponseDtoList = List.of(deliveryInfoStatusResponseDto);
-
-        when(service.retrieveDeliveryStatus()).thenReturn(deliveryInfoStatusResponseDtoList);
-
-        String jsonRequest = mapper.writeValueAsString(deliveryInfoStatusResponseDtoList);
-
-        mockMvc.perform(get("/eggplant-delivery/delivery-info-status")
                    .contentType(APPLICATION_JSON)
                    .content(jsonRequest))
                .andExpect(status().isOk());

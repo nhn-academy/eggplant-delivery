@@ -13,12 +13,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
-class UuidVer5GeneratorTest {
+class UuidGeneratorTest {
 
     @Test
     @DisplayName("ver5 Uuid 를 만들어 내는 코드 입니다.")
     void testNameUuidFromNamespaceAndBytes() {
-        UUID uuid = UuidVer5Generator.ver5UuidFromNamespaceAndBytes(("Host" + "OrderNo").getBytes(
+        UUID uuid = UuidGenerator.ver5UuidFromNamespaceAndBytes(("Host" + "OrderNo").getBytes(
             StandardCharsets.UTF_8));
 
         assertEquals("99d93b5e-703d-54fa-8e9a-7c84c344644e", uuid.toString());
@@ -34,11 +34,10 @@ class UuidVer5GeneratorTest {
                         .thenThrow(new NoSuchAlgorithmException());
             byte[] bytes = ("Host" + "OrderNo").getBytes(StandardCharsets.UTF_8);
             assertThatThrownBy(() ->
-                UuidVer5Generator.ver5UuidFromNamespaceAndBytes(bytes)
+                UuidGenerator.ver5UuidFromNamespaceAndBytes(bytes)
             ).isInstanceOf(InternalError.class)
              .hasMessageContaining("SHA-256 not supported");
         }
-
     }
 
 }

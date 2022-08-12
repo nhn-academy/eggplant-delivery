@@ -30,8 +30,6 @@ public class DeliveryController {
 
     private final Sender sender;
 
-    private final DeliveryService service;
-
     /**
      * 운송장번호를 생성 요청을 처리하는 컨트롤러 메서드 입니다.
      *
@@ -41,7 +39,7 @@ public class DeliveryController {
      */
     @PostMapping("/tracking-no")
     public ResponseEntity<Void> createTrackingNo(@RequestBody final OrderInfoRequestDto orderInfoRequestDto,
-        HttpServletRequest servletRequest) {
+                                                 final HttpServletRequest servletRequest) {
 
         orderInfoRequestDto.insertShopHost(servletRequest.getRemoteHost());
         sender.send(orderInfoRequestDto);

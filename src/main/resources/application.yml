@@ -9,6 +9,11 @@ secure-key-manager:
   url: https://api-keymanager.cloud.toast.com
   app-key: mcXcTmrnbRezlila
   local-key: gaship
+  user-info-protection-key: 8174a0ef88454634911b8aa84988ae12
+
+aes:
+  algorithm: AES/ECB/PKCS5Padding
+
 
 spring:
   mvc:

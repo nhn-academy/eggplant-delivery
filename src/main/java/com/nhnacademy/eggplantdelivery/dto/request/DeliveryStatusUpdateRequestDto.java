@@ -4,7 +4,6 @@ import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * 배송상태 수정을 위한 요청 Dto 입니다.

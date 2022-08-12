@@ -12,9 +12,9 @@ import java.util.UUID;
  * @author 김훈민, 조재철
  * @version 1.0.0
  */
-public class UuidVer5Generator {
+public class UuidGenerator {
 
-    private UuidVer5Generator() {
+    private UuidGenerator() {
     }
 
     private static final String BASIC_UUID_STRING = "38400000-8cf0-11bd-b23e-10b96e4ef00d";

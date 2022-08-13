@@ -104,7 +104,7 @@ public class AuthenticationConfig {
                           .getBody()
                           .getSecret();
         } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException
-                 | UnrecoverableKeyException | IOException | KeyManagementException e) {
+            | UnrecoverableKeyException | IOException | KeyManagementException e) {
             throw new FindSecretDataFromSecureKeyManagerException();
         }
     }

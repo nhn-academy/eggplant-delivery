@@ -1,11 +1,13 @@
 package com.nhnacademy.eggplantdelivery.config;
 
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
+import static com.nhnacademy.eggplantdelivery.constant.ExchangeConstant.DIRECT_EXCHANGE;
+import static com.nhnacademy.eggplantdelivery.constant.QueueConstant.CHANGE_DELIVERY_STATUS;
+import static com.nhnacademy.eggplantdelivery.constant.QueueConstant.REQUEST_TRACKING_NO;
+import static com.nhnacademy.eggplantdelivery.constant.QueueConstant.RESPONSE_TRACKING_NO;
+import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_CHANGE_DELIVERY_STATUS;
+import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_REQUEST_TRACKING_NO;
+import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_RESPONSE_TRACKING_NO;
+
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -28,10 +30,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "rabbitmq")
 public class RabbitmqConfig {
 
-    public static final String ROUTING_EGGPLANT = "routing.Eggplant";
-    public static final String ROUTING_TRACKING_NO = "routing.TrackingNo";
-    public static final String ROUTING_UPDATE_STATUS = "routing.UpdateStatus";
-    public static final String ROUTING_DELIVERY_ARRIVAL = "routing.DeliveryArrival";
     private String host;
     private int port;
     private String username;
@@ -74,18 +72,10 @@ public class RabbitmqConfig {
      *
      * @param authenticationConfig secure key 와 관련된 설정을 위한 객체.
      * @return 연결 설정하는 ConnectionFactory 반환.
-     * @throws UnrecoverableKeyException key 를 복원할 수 없는 경우에 예외를 발생.
-     * @throws CertificateException      인증서의 encode 문제, 유효하지 않은 경우 예외 발생.
-     * @throws KeyStoreException         키스토어 예외 발생.
-     * @throws IOException               I/O 오류가 발생하는 경우에 throw 되는 예외 발생.
-     * @throws NoSuchAlgorithmException  암호 알고리즘이 요구되었음에도 불구하고, 현재의 환경에서는 사용 가능하지 않은 경우에 예외 발생.
-     * @throws KeyManagementException    키 관리를 다루는 모든 작업에 대한 일반적인 키 관리 예외 발생.
      * @author 김훈민, 조재철
      */
     @Bean
-    public ConnectionFactory connectionFactory(final AuthenticationConfig authenticationConfig)
-        throws UnrecoverableKeyException, CertificateException, KeyStoreException, IOException,
-        NoSuchAlgorithmException, KeyManagementException {
+    public ConnectionFactory connectionFactory(final AuthenticationConfig authenticationConfig) {
 
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
         connectionFactory.setHost(authenticationConfig.findSecretDataFromSecureKeyManager(host));
@@ -107,64 +97,50 @@ public class RabbitmqConfig {
     }
 
     @Bean
-    Queue queueEggplant() {
-        return new Queue("queue.Eggplant", false);
+    Queue queueRequestTrackingNo() {
+        return new Queue(REQUEST_TRACKING_NO.getValue(), false);
     }
 
     @Bean
-    Queue queueTrackingNo() {
-        return new Queue("queue.TrackingNo", false);
+    Queue queueResponseTrackingNo() {
+        return new Queue(RESPONSE_TRACKING_NO.getValue(), false);
     }
 
     @Bean
-    Queue queueUpdateStatus() {
-        return new Queue("queue.UpdateStatus", false);
-    }
-
-    @Bean
-    Queue queueDeliveryArrival() {
-        return new Queue("queue.DeliveryArrival", false);
+    Queue queueChangeDeliveryStatus() {
+        return new Queue(CHANGE_DELIVERY_STATUS.getValue(), false);
     }
 
     @Bean
     DirectExchange exchange() {
-        return new DirectExchange("exchange.direct");
+        return new DirectExchange(DIRECT_EXCHANGE.getValue());
     }
 
     @Bean
-    Binding bindEggplant(final Queue queueEggplant,
+    Binding bindRequestTrackingNo(final Queue queueRequestTrackingNo,
         final DirectExchange exchange) {
 
-        return BindingBuilder.bind(queueEggplant)
+        return BindingBuilder.bind(queueRequestTrackingNo)
                              .to(exchange)
-                             .with(ROUTING_EGGPLANT);
+                             .with(ROUTING_REQUEST_TRACKING_NO.getValue());
     }
 
     @Bean
-    Binding bindTrackingNo(final Queue queueTrackingNo,
+    Binding bindResponseTrackingNo(final Queue queueResponseTrackingNo,
         final DirectExchange exchange) {
 
-        return BindingBuilder.bind(queueTrackingNo)
+        return BindingBuilder.bind(queueResponseTrackingNo)
                              .to(exchange)
-                             .with(ROUTING_TRACKING_NO);
+                             .with(ROUTING_RESPONSE_TRACKING_NO.getValue());
     }
 
     @Bean
-    Binding bindCompletionStatus(final Queue queueUpdateStatus,
+    Binding bindReadyToDelivering(final Queue queueChangeDeliveryStatus,
         final DirectExchange exchange) {
 
-        return BindingBuilder.bind(queueUpdateStatus)
+        return BindingBuilder.bind(queueChangeDeliveryStatus)
                              .to(exchange)
-                             .with(ROUTING_UPDATE_STATUS);
-    }
-
-    @Bean
-    Binding bindDeliveryArrival(final Queue queueDeliveryArrival,
-        final DirectExchange exchange) {
-
-        return BindingBuilder.bind(queueDeliveryArrival)
-                             .to(exchange)
-                             .with(ROUTING_DELIVERY_ARRIVAL);
+                             .with(ROUTING_CHANGE_DELIVERY_STATUS.getValue());
     }
 
 }

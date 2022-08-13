@@ -8,8 +8,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
-import com.nhnacademy.eggplantdelivery.dto.request.DeliveryStatusUpdateRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
+import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import com.nhnacademy.eggplantdelivery.module.Sender;
@@ -30,7 +30,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(SpringExtension.class)
 @Import(DefaultDeliveryService.class)
@@ -117,21 +116,21 @@ class DefaultDeliveryServiceTest {
                                                 .shopHost(aesGenerator.aesEcbEncode(orderInfoRequestDto.getShopHost()))
                                                 .build();
 
-        DeliveryStatusUpdateRequestDto deliveryStatusUpdateRequestDto = new DeliveryStatusUpdateRequestDto();
-
-        ReflectionTestUtils.setField(deliveryStatusUpdateRequestDto, "trackingNo", uuid.toString());
-        ReflectionTestUtils.setField(deliveryStatusUpdateRequestDto, "status", Status.DELIVERING);
+        DeliveryInfoStatusResponseDto requestDto = DeliveryInfoStatusResponseDto.builder()
+                                                                                .orderNo("1234412")
+                                                                                .status(Status.DELIVERING)
+                                                                                .arrivalTime(LocalDateTime.now())
+                                                                                .build();
 
         when(deliveryInfoRepository.findById(anyString())).thenReturn(Optional.ofNullable(deliveryInfo));
 
-        Objects.requireNonNull(deliveryInfo).updateStatus(deliveryStatusUpdateRequestDto.getStatus());
+        Objects.requireNonNull(deliveryInfo).updateStatus(requestDto.getStatus());
 
-        doNothing().when(deliveryAdaptor).sendUpdateStatus(any());
+        doNothing().when(deliveryAdaptor).sendChangeDeliveryStatus(any());
 
-        service.sendUpdateStatus(deliveryStatusUpdateRequestDto);
+        service.sendChangeDeliveryStatus(requestDto);
 
-        verify(deliveryInfoRepository, times(1)).findById(anyString());
-        verify(deliveryAdaptor).sendUpdateStatus(any());
+        verify(deliveryAdaptor).sendChangeDeliveryStatus(any());
     }
 
 }

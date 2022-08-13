@@ -4,6 +4,7 @@ import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
 import com.nhnacademy.eggplantdelivery.dto.request.CreatedTrackingNoDto;
 import com.nhnacademy.eggplantdelivery.dto.request.DeliveryInfoStatusRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
+import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -53,16 +54,23 @@ public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
     }
 
     @Override
-    public void sendUpdateStatus(final DeliveryInfoStatusRequestDto deliveryStatusUpdateRequestDto) {
+    public void sendChangeDeliveryStatus(final DeliveryInfoStatusResponseDto deliveryInfoStatusResponseDto) {
         WebClient webClient = WebClient.builder()
-                                       .baseUrl(PROTOCOL + deliveryStatusUpdateRequestDto.getShopHost() + ":8080")
+                                       .baseUrl(PROTOCOL + deliveryInfoStatusResponseDto.getShopHost() + ":8080")
                                        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                                        .build();
 
+        DeliveryInfoStatusRequestDto deliveryInfoStatusRequestDto
+            = DeliveryInfoStatusRequestDto.builder()
+                                          .orderNo(deliveryInfoStatusResponseDto.getOrderNo())
+                                          .status(deliveryInfoStatusResponseDto.getStatus().toString())
+                                          .arrivalTime(deliveryInfoStatusResponseDto.getArrivalTime())
+                                          .build();
+
         webClient.patch()
-                 .uri(uriBuilder -> uriBuilder.path("/web-client/delivery/delivery-update")
+                 .uri(uriBuilder -> uriBuilder.path("/eggplant/delivery-info")
                                               .build())
-                 .bodyValue(deliveryStatusUpdateRequestDto.getStatus())
+                 .bodyValue(deliveryInfoStatusRequestDto)
                  .exchangeToMono(clientResponse -> {
                      if (clientResponse.statusCode().equals(HttpStatus.OK)) {
                          return clientResponse.bodyToMono(ResponseEntity.class);

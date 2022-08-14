@@ -2,9 +2,11 @@ package com.nhnacademy.eggplantdelivery.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -14,6 +16,7 @@ import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
+import java.util.Collections;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -48,11 +51,9 @@ class DeliveryControllerTest {
    @DisplayName("운송장 번호 생성")
    void testCreateTrackingNo() throws Exception {
        when(servletRequest.getRemoteHost()).thenReturn("localhost");
-
        when(servletRequest.getServerPort()).thenReturn(8080);
 
        doNothing().when(sender).send(any(OrderInfoRequestDto.class));
-
        doNothing().when(service).sendTrackingNo(any(OrderInfoRequestDto.class));
 
        OrderInfoRequestDto orderInfoRequestDto = new OrderInfoRequestDto(
@@ -64,7 +65,15 @@ class DeliveryControllerTest {
                   .contentType(APPLICATION_JSON)
                   .content(jsonRequest))
               .andExpect(status().isCreated());
+   }
 
+   @Test
+   @DisplayName("배송정보, 배송위치 조회 후 List 로 요청 서버에 전송")
+   void retrieveDeliveryLocation() throws Exception {
+       when(service.retrieveDeliveryLocation(anyString())).thenReturn(Collections.emptyList());
+       mockMvc.perform(get("/eggplant-delivery/tracking-no?trackingNo=1")
+                  .contentType(APPLICATION_JSON))
+              .andExpect(status().isOk());
    }
 
 }

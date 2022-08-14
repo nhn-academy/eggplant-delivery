@@ -3,10 +3,12 @@ package com.nhnacademy.eggplantdelivery.service.impl;
 import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
+import com.nhnacademy.eggplantdelivery.dto.response.DeliveryLocationResponseDto;
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
+import com.nhnacademy.eggplantdelivery.repository.LocationRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import com.nhnacademy.eggplantdelivery.utill.AesGenerator;
 import com.nhnacademy.eggplantdelivery.utill.UuidGenerator;
@@ -31,6 +33,7 @@ import org.springframework.validation.annotation.Validated;
 public class DefaultDeliveryService implements DeliveryService {
 
     private final DeliveryInfoRepository deliveryInfoRepository;
+    private final LocationRepository locationRepository;
     private final Sender sender;
     private final DeliveryAdaptor adaptor;
     private final AesGenerator aesGenerator;
@@ -72,6 +75,11 @@ public class DefaultDeliveryService implements DeliveryService {
     @Override
     public void sendChangeDeliveryStatus(@Validated final DeliveryInfoStatusResponseDto deliveryInfoStatusResponseDto) {
         adaptor.sendChangeDeliveryStatus(deliveryInfoStatusResponseDto);
+    }
+
+    @Override
+    public DeliveryLocationResponseDto retrieveDeliveryLocation(final String trackingNo) {
+        return null;
     }
 
 }

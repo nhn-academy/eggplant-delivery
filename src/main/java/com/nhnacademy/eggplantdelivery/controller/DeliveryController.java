@@ -34,7 +34,7 @@ public class DeliveryController {
     private final DeliveryService deliveryService;
 
     /**
-     * 운송장번호를 생성 요청을 처리하는 컨트롤러 메서드 입니다.
+     * 운송장 번호를 생성 요청을 처리하는 컨트롤러 메서드 입니다.
      *
      * @param orderInfoRequestDto 쇼핑몰 서버에서 넘어온 주문 정보입니다.
      * @return 운송장번호를 반환 합니다.
@@ -51,6 +51,13 @@ public class DeliveryController {
                              .build();
     }
 
+    /**
+     * 운송장 번호로 배송정보, 위치정보를 찾는 컨트롤러 메소드 입니다.
+     *
+     * @param trackingNo 조회할 운송장 번호입니다.
+     * @return DeliveryLocationResponseDto 배송정보, 위치정보를 담고있는 Dto List 입니다.
+     * @author 김훈민, 조재철
+     */
     @GetMapping("/tracking-no")
     public ResponseEntity<List<DeliveryLocationResponseDto>> retrieveDeliveryLocation(
         @RequestParam(value = "trackingNo") @Min(1) final String trackingNo) {

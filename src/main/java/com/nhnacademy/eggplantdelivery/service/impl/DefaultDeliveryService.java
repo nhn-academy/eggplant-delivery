@@ -8,12 +8,12 @@ import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
-import com.nhnacademy.eggplantdelivery.repository.LocationRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import com.nhnacademy.eggplantdelivery.utill.AesGenerator;
 import com.nhnacademy.eggplantdelivery.utill.UuidGenerator;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,6 @@ import org.springframework.validation.annotation.Validated;
 public class DefaultDeliveryService implements DeliveryService {
 
     private final DeliveryInfoRepository deliveryInfoRepository;
-    private final LocationRepository locationRepository;
     private final Sender sender;
     private final DeliveryAdaptor adaptor;
     private final AesGenerator aesGenerator;
@@ -78,8 +77,8 @@ public class DefaultDeliveryService implements DeliveryService {
     }
 
     @Override
-    public DeliveryLocationResponseDto retrieveDeliveryLocation(final String trackingNo) {
-        return null;
+    public List<DeliveryLocationResponseDto> retrieveDeliveryLocation(final String trackingNo) {
+        return deliveryInfoRepository.retrieveDeliveryLocationResponseDto(trackingNo);
     }
 
 }

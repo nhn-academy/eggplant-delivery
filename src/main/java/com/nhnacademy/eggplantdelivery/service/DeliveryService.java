@@ -3,6 +3,7 @@ package com.nhnacademy.eggplantdelivery.service;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
 import com.nhnacademy.eggplantdelivery.dto.response.DeliveryLocationResponseDto;
+import java.util.List;
 
 /**
  * 배송 요청과 Rabbit MQ 관련 로직을 처리하는 인터페이스 입니다.
@@ -18,5 +19,5 @@ public interface DeliveryService {
 
     void sendChangeDeliveryStatus(final DeliveryInfoStatusResponseDto deliveryInfoStatusResponseDto);
 
-    DeliveryLocationResponseDto retrieveDeliveryLocation(final String trackingNo);
+    List<DeliveryLocationResponseDto> retrieveDeliveryLocation(final String trackingNo);
 }

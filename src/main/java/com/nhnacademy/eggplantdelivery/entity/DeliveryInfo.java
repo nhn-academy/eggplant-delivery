@@ -44,6 +44,10 @@ public class DeliveryInfo {
     @NotBlank(message = "수취인 이름은 필수 입니다.")
     private String receiverName;
 
+    @Column(name = "receiver_detail_address")
+    @NotBlank(message = "수취인 상세주소는 필수 입니다.")
+    private String receiverDetailAddress;
+
     @Column(name = "receiver_address")
     @NotBlank(message = "수취인 주소는 필수 입니다.")
     private String receiverAddress;
@@ -59,10 +63,6 @@ public class DeliveryInfo {
     @Column(name = "order_no")
     @NotBlank(message = "해당 주문에 대한 주문 번호는 필수 입니다.")
     private String orderNo;
-
-    public void updateStatus(final Status status) {
-        this.status = status;
-    }
 
 }
 

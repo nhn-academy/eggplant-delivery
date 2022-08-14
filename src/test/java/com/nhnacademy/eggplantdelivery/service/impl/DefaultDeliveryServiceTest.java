@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 
 import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
-import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import com.nhnacademy.eggplantdelivery.module.Sender;
@@ -19,8 +18,6 @@ import com.nhnacademy.eggplantdelivery.utill.AesGenerator;
 import com.nhnacademy.eggplantdelivery.utill.UuidGenerator;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -55,7 +52,7 @@ class DefaultDeliveryServiceTest {
     @BeforeEach
     void beforeSetting() {
         orderInfoRequestDto = new OrderInfoRequestDto(
-            null, "1", "1", "1", "1", "1"
+            null, "1", "1", "1", "1", "1", "1"
         );
     }
 
@@ -72,6 +69,8 @@ class DefaultDeliveryServiceTest {
                                                     aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverName()))
                                                 .receiverAddress(
                                                     aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverAddress()))
+                                                .receiverDetailAddress(aesGenerator.aesEcbEncode(
+                                                    orderInfoRequestDto.getReceiverDetailAddress()))
                                                 .receiverPhone(
                                                     aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverPhone()))
                                                 .orderNo(orderInfoRequestDto.getOrderNo())
@@ -84,7 +83,6 @@ class DefaultDeliveryServiceTest {
 
 
         verify(deliveryInfoRepository).save(any(DeliveryInfo.class));
-        verify(aesGenerator, times(4)).aesEcbEncode((anyString()));
     }
 
     @Test
@@ -95,42 +93,6 @@ class DefaultDeliveryServiceTest {
         service.sendTrackingNo(orderInfoRequestDto);
 
         verify(deliveryAdaptor).sendTrackingNo(orderInfoRequestDto);
-    }
-
-    @Test
-    @DisplayName("배송 정보 상태 수정")
-    void testSendUpdateStatus() {
-        UUID uuid = UuidGenerator.ver5UuidFromNamespaceAndBytes(("Host" + "OrderNo" + LocalDateTime.now()).getBytes(
-            StandardCharsets.UTF_8));
-
-        DeliveryInfo deliveryInfo = DeliveryInfo.builder()
-                                                .trackingNo(uuid.toString())
-                                                .status(Status.DELIVERING)
-                                                .receiverName(
-                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverName()))
-                                                .receiverAddress(
-                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverAddress()))
-                                                .receiverPhone(
-                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverPhone()))
-                                                .orderNo(orderInfoRequestDto.getOrderNo())
-                                                .shopHost(aesGenerator.aesEcbEncode(orderInfoRequestDto.getShopHost()))
-                                                .build();
-
-        DeliveryInfoStatusResponseDto requestDto = DeliveryInfoStatusResponseDto.builder()
-                                                                                .orderNo("1234412")
-                                                                                .status(Status.DELIVERING)
-                                                                                .arrivalTime(LocalDateTime.now())
-                                                                                .build();
-
-        when(deliveryInfoRepository.findById(anyString())).thenReturn(Optional.ofNullable(deliveryInfo));
-
-        Objects.requireNonNull(deliveryInfo).updateStatus(requestDto.getStatus());
-
-        doNothing().when(deliveryAdaptor).sendChangeDeliveryStatus(any());
-
-        service.sendChangeDeliveryStatus(requestDto);
-
-        verify(deliveryAdaptor).sendChangeDeliveryStatus(any());
     }
 
 }

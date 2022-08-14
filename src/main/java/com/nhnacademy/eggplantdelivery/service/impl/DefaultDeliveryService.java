@@ -47,13 +47,16 @@ public class DefaultDeliveryService implements DeliveryService {
                                                 .status(Status.READY)
                                                 .orderNo(orderInfoRequestDto.getOrderNo())
                                                 .receiverName(
-                                                    aesGenerator.aesEcbDecode(orderInfoRequestDto.getReceiverName()))
+                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverName()))
                                                 .receiverAddress(
-                                                    aesGenerator.aesEcbDecode(orderInfoRequestDto.getReceiverAddress()))
+                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverAddress()))
+                                                .receiverDetailAddress(
+                                                    aesGenerator.aesEcbEncode(
+                                                        orderInfoRequestDto.getReceiverDetailAddress()))
                                                 .receiverPhone(
-                                                    aesGenerator.aesEcbDecode(orderInfoRequestDto.getReceiverPhone()))
+                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverPhone()))
                                                 .shopHost(
-                                                    aesGenerator.aesEcbDecode(orderInfoRequestDto.getShopHost()))
+                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getShopHost()))
                                                 .build());
 
         orderInfoRequestDto.insertTrackingNo(trackingNo);

@@ -1,21 +1,20 @@
 package com.nhnacademy.eggplantdelivery.dto.response;
 
+import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@NoArgsConstructor
+@Setter
 @AllArgsConstructor
-@Builder
 public class DeliveryLocationResponseDto {
 
-    private String status;
+    private Status status;
     private LocalDateTime completionTime;
-    private List<LocationResponseDto> locationResponseDtoList;
+    private Long locationNo;
+    private LocalDateTime arrivalTime;
 
 }
 

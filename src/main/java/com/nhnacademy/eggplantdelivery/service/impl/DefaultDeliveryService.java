@@ -1,12 +1,10 @@
 package com.nhnacademy.eggplantdelivery.service.impl;
 
 import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
-import com.nhnacademy.eggplantdelivery.dto.request.DeliveryInfoStatusRequestDto;
-import com.nhnacademy.eggplantdelivery.dto.request.DeliveryStatusUpdateRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
+import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
-import com.nhnacademy.eggplantdelivery.exception.DeliveryInfoNotFoundException;
 import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
@@ -49,13 +47,16 @@ public class DefaultDeliveryService implements DeliveryService {
                                                 .status(Status.READY)
                                                 .orderNo(orderInfoRequestDto.getOrderNo())
                                                 .receiverName(
-                                                    aesGenerator.aesEcbDecode(orderInfoRequestDto.getReceiverName()))
+                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverName()))
                                                 .receiverAddress(
-                                                    aesGenerator.aesEcbDecode(orderInfoRequestDto.getReceiverAddress()))
+                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverAddress()))
+                                                .receiverDetailAddress(
+                                                    aesGenerator.aesEcbEncode(
+                                                        orderInfoRequestDto.getReceiverDetailAddress()))
                                                 .receiverPhone(
-                                                    aesGenerator.aesEcbDecode(orderInfoRequestDto.getReceiverPhone()))
+                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverPhone()))
                                                 .shopHost(
-                                                    aesGenerator.aesEcbDecode(orderInfoRequestDto.getShopHost()))
+                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getShopHost()))
                                                 .build());
 
         orderInfoRequestDto.insertTrackingNo(trackingNo);
@@ -69,18 +70,8 @@ public class DefaultDeliveryService implements DeliveryService {
 
     @Transactional
     @Override
-    public void sendUpdateStatus(@Validated final DeliveryStatusUpdateRequestDto deliveryStatusUpdateRequestDto) {
-        DeliveryInfo deliveryInfo = deliveryInfoRepository.findById(deliveryStatusUpdateRequestDto.getTrackingNo())
-                                                          .orElseThrow(DeliveryInfoNotFoundException::new);
-
-
-        deliveryInfo.updateStatus(deliveryStatusUpdateRequestDto.getStatus());
-
-        adaptor.sendUpdateStatus(DeliveryInfoStatusRequestDto.builder()
-                                                             .trackingNo(deliveryInfo.getTrackingNo())
-                                                             .status(deliveryInfo.getStatus())
-                                                             .shopHost(deliveryInfo.getShopHost())
-                                                             .build());
+    public void sendChangeDeliveryStatus(@Validated final DeliveryInfoStatusResponseDto deliveryInfoStatusResponseDto) {
+        adaptor.sendChangeDeliveryStatus(deliveryInfoStatusResponseDto);
     }
 
 }

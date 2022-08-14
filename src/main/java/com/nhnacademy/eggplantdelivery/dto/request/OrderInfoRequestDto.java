@@ -27,6 +27,9 @@ public class OrderInfoRequestDto {
     @NotBlank(message = "수취인 주소는 필수 입니다.")
     private String receiverAddress;
 
+    @NotBlank(message = "수취인 상세주소는 필수 입니다.")
+    private String receiverDetailAddress;
+
     @NotBlank(message = "수취인 휴대번호는 필수 입니다.")
     private String receiverPhone;
 

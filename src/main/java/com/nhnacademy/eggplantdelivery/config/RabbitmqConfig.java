@@ -11,6 +11,8 @@ import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTIN
 import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_REQUEST_TRACKING_NO_DLX;
 import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_RESPONSE_TRACKING_NO;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -101,7 +103,10 @@ public class RabbitmqConfig {
 
     @Bean
     Queue queueRequestTrackingNo() {
-        return new Queue(REQUEST_TRACKING_NO.getValue(), false);
+        Map<String, Object> withArguments = new HashMap<>();
+        withArguments.put("x-dead-letter-exchange", "");
+        withArguments.put("x-dead-letter-routing-key", REQUEST_TRACKING_NO_DLX.getValue());
+        return new Queue(REQUEST_TRACKING_NO.getValue(), false, false, false, withArguments);
     }
 
     @Bean

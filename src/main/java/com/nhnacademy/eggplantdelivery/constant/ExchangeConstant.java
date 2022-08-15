@@ -8,7 +8,8 @@ package com.nhnacademy.eggplantdelivery.constant;
  */
 public enum ExchangeConstant {
 
-    DIRECT_EXCHANGE("exchange.direct");
+    DIRECT_EXCHANGE("exchange.direct"),
+    DIRECT_EXCHANGE_DLX("exchange.direct.dlx");
 
     private final String value;
 

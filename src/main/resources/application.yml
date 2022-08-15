@@ -14,7 +14,6 @@ secure-key-manager:
 aes:
   algorithm: AES/ECB/PKCS5Padding
 
-
 spring:
   mvc:
     pathmatch:
@@ -27,6 +26,16 @@ spring:
       local: common, testdb
       dev: common, devdb
       prod: common, proddb
+  rabbitmq:
+    listener:
+      simple:
+        acknowledge-mode: auto
+        retry:
+          enabled: true
+          initial-interval: 2s
+          max-interval: 5s
+          max-attempts: 2
+          multiplier: 2
 
 datasource:
   driver-class-name: com.mysql.cj.jdbc.Driver

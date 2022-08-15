@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * 예외를 처리하는 Controller 입니다.
  *
  * @author : 김훈민, 조재철
- * @version  1.0.0
+ * @version 1.0.0
  */
 @RestControllerAdvice
 public class ExceptionController {

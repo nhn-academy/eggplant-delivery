@@ -4,6 +4,7 @@ rabbitmq:
   username: ea91066a691544fd98109e8eb7e6a494
   password: ff39e7234e55400ebf81feec38e1b64e
 
+
 # NHN SecureManager
 secure-key-manager:
   url: https://api-keymanager.cloud.toast.com
@@ -27,6 +28,17 @@ spring:
       local: common, testdb
       dev: common, devdb
       prod: common, proddb
+  rabbitmq:
+    listener:
+      simple:
+        acknowledge-mode: auto # manual X auto O
+        retry:
+          enabled: true # 재시도
+          initial-interval: 3s # 최초 메시지 처리 실패 후 재시도까지의 인터벌
+          max-interval: 10s # 최대 재시도 인터벌
+          max-attempts: 2 # 최대 재시도 횟수
+          multiplier: 2 # 이전 interval * multiplier = 다음 interval
+
 
 datasource:
   driver-class-name: com.mysql.cj.jdbc.Driver

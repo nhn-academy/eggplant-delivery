@@ -1,11 +1,14 @@
 package com.nhnacademy.eggplantdelivery.config;
 
 import static com.nhnacademy.eggplantdelivery.constant.ExchangeConstant.DIRECT_EXCHANGE;
+import static com.nhnacademy.eggplantdelivery.constant.ExchangeConstant.DIRECT_EXCHANGE_DLX;
 import static com.nhnacademy.eggplantdelivery.constant.QueueConstant.CHANGE_DELIVERY_STATUS;
 import static com.nhnacademy.eggplantdelivery.constant.QueueConstant.REQUEST_TRACKING_NO;
+import static com.nhnacademy.eggplantdelivery.constant.QueueConstant.REQUEST_TRACKING_NO_DLX;
 import static com.nhnacademy.eggplantdelivery.constant.QueueConstant.RESPONSE_TRACKING_NO;
 import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_CHANGE_DELIVERY_STATUS;
 import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_REQUEST_TRACKING_NO;
+import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_REQUEST_TRACKING_NO_DLX;
 import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_RESPONSE_TRACKING_NO;
 
 import org.springframework.amqp.core.Binding;
@@ -102,6 +105,11 @@ public class RabbitmqConfig {
     }
 
     @Bean
+    Queue queueRequestTrackingNoDlx() {
+        return new Queue(REQUEST_TRACKING_NO_DLX.getValue(), false);
+    }
+
+    @Bean
     Queue queueResponseTrackingNo() {
         return new Queue(RESPONSE_TRACKING_NO.getValue(), false);
     }
@@ -117,8 +125,13 @@ public class RabbitmqConfig {
     }
 
     @Bean
+    DirectExchange exchangeDlx() {
+        return new DirectExchange(DIRECT_EXCHANGE_DLX.getValue());
+    }
+
+    @Bean
     Binding bindRequestTrackingNo(final Queue queueRequestTrackingNo,
-                                  final DirectExchange exchange) {
+        final DirectExchange exchange) {
 
         return BindingBuilder.bind(queueRequestTrackingNo)
                              .to(exchange)
@@ -126,8 +139,18 @@ public class RabbitmqConfig {
     }
 
     @Bean
+    Binding bindRequestTrackingNoDlx(final Queue queueRequestTrackingNoDlx,
+        final DirectExchange exchangeDlx) {
+
+        return BindingBuilder.bind(queueRequestTrackingNoDlx)
+                             .to(exchangeDlx)
+                             .with(ROUTING_REQUEST_TRACKING_NO_DLX.getValue());
+
+    }
+
+    @Bean
     Binding bindResponseTrackingNo(final Queue queueResponseTrackingNo,
-                                   final DirectExchange exchange) {
+        final DirectExchange exchange) {
 
         return BindingBuilder.bind(queueResponseTrackingNo)
                              .to(exchange)
@@ -136,7 +159,7 @@ public class RabbitmqConfig {
 
     @Bean
     Binding bindReadyToDelivering(final Queue queueChangeDeliveryStatus,
-                                  final DirectExchange exchange) {
+        final DirectExchange exchange) {
 
         return BindingBuilder.bind(queueChangeDeliveryStatus)
                              .to(exchange)

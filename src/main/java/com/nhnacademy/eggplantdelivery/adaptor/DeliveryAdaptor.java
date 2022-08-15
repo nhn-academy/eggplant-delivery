@@ -1,6 +1,5 @@
 package com.nhnacademy.eggplantdelivery.adaptor;
 
-import com.nhnacademy.eggplantdelivery.dto.request.DeliveryInfoStatusRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
 import org.springframework.validation.annotation.Validated;

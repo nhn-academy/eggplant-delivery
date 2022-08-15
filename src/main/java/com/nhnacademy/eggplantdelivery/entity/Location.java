@@ -6,14 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +25,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "location")
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Location {
 
     @EmbeddedId
@@ -38,7 +38,6 @@ public class Location {
     private DeliveryInfo deliveryInfo;
 
     @Column(name = "arrival_time")
-    @NotNull(message = "도착시간은 필수 입니다.")
     private LocalDateTime arrivalTime;
 
     /**
@@ -53,13 +52,10 @@ public class Location {
     @EqualsAndHashCode
     public static class Pk implements Serializable {
 
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "location_no")
-        @NotNull(message = "위치 번호는 필수 입니다.")
         private Long locationNo;
 
         @Column(name = "tracking_no")
-        @NotNull(message = "운송장 번호는 필수 입니다.")
         private String trackingNo;
 
     }

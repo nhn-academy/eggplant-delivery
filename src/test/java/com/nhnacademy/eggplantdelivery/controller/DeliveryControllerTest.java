@@ -1,11 +1,11 @@
 package com.nhnacademy.eggplantdelivery.controller;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -14,7 +14,7 @@ import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
-import java.util.List;
+import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,45 +26,51 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(DeliveryController.class)
 class DeliveryControllerTest {
 
-   @Autowired
-   MockMvc mockMvc;
+    @Autowired
+    MockMvc mockMvc;
 
-   @Autowired
-   ObjectMapper mapper;
+    @Autowired
+    ObjectMapper mapper;
 
-   @MockBean
-   DeliveryService service;
+    @MockBean
+    DeliveryService service;
 
-   @MockBean
-   DeliveryInfoRepository repository;
+    @MockBean
+    DeliveryInfoRepository repository;
 
-   @MockBean
-   HttpServletRequest servletRequest;
+    @MockBean
+    HttpServletRequest servletRequest;
 
-   @MockBean
-   Sender sender;
+    @MockBean
+    Sender sender;
 
-   @Test
-   @DisplayName("운송장 번호 생성")
-   void testCreateTrackingNo() throws Exception {
-       when(servletRequest.getRemoteHost()).thenReturn("localhost");
+    @Test
+    @DisplayName("운송장 번호 생성")
+    void testCreateTrackingNo() throws Exception {
+        when(servletRequest.getRemoteHost()).thenReturn("localhost");
+        when(servletRequest.getServerPort()).thenReturn(8080);
 
-       when(servletRequest.getServerPort()).thenReturn(8080);
+        doNothing().when(sender).send(any(OrderInfoRequestDto.class));
+        doNothing().when(service).sendTrackingNo(any(OrderInfoRequestDto.class));
 
-       doNothing().when(sender).send(any(OrderInfoRequestDto.class));
+        OrderInfoRequestDto orderInfoRequestDto = new OrderInfoRequestDto(
+            null, "1", "1", "1", "1", "1", "1");
 
-       doNothing().when(service).sendTrackingNo(any(OrderInfoRequestDto.class));
+        String jsonRequest = mapper.writeValueAsString(orderInfoRequestDto);
 
-       OrderInfoRequestDto orderInfoRequestDto = new OrderInfoRequestDto(
-           null, "1", "1", "1", "1", "1", "1");
+        mockMvc.perform(post("/eggplant-delivery/tracking-no")
+                   .contentType(APPLICATION_JSON)
+                   .content(jsonRequest))
+               .andExpect(status().isCreated());
+    }
 
-       String jsonRequest = mapper.writeValueAsString(orderInfoRequestDto);
-
-       mockMvc.perform(post("/eggplant-delivery/tracking-no")
-                  .contentType(APPLICATION_JSON)
-                  .content(jsonRequest))
-              .andExpect(status().isCreated());
-
-   }
+    @Test
+    @DisplayName("배송정보, 배송위치 조회 후 List 로 요청 서버에 전송")
+    void retrieveDeliveryLocation() throws Exception {
+        when(service.retrieveDeliveryLocation(anyString())).thenReturn(Collections.emptyList());
+        mockMvc.perform(get("/eggplant-delivery/tracking-no?trackingNo=1")
+                   .contentType(APPLICATION_JSON))
+               .andExpect(status().isOk());
+    }
 
 }

@@ -118,7 +118,7 @@ public class RabbitmqConfig {
 
     @Bean
     Binding bindRequestTrackingNo(final Queue queueRequestTrackingNo,
-        final DirectExchange exchange) {
+                                  final DirectExchange exchange) {
 
         return BindingBuilder.bind(queueRequestTrackingNo)
                              .to(exchange)
@@ -127,7 +127,7 @@ public class RabbitmqConfig {
 
     @Bean
     Binding bindResponseTrackingNo(final Queue queueResponseTrackingNo,
-        final DirectExchange exchange) {
+                                   final DirectExchange exchange) {
 
         return BindingBuilder.bind(queueResponseTrackingNo)
                              .to(exchange)
@@ -136,7 +136,7 @@ public class RabbitmqConfig {
 
     @Bean
     Binding bindReadyToDelivering(final Queue queueChangeDeliveryStatus,
-        final DirectExchange exchange) {
+                                  final DirectExchange exchange) {
 
         return BindingBuilder.bind(queueChangeDeliveryStatus)
                              .to(exchange)

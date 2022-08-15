@@ -1,7 +1,6 @@
 package com.nhnacademy.eggplantdelivery.module;
 
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
-import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

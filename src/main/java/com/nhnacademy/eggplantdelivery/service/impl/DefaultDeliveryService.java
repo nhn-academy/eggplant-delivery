@@ -3,6 +3,7 @@ package com.nhnacademy.eggplantdelivery.service.impl;
 import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
+import com.nhnacademy.eggplantdelivery.dto.response.DeliveryLocationResponseDto;
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import com.nhnacademy.eggplantdelivery.module.Sender;
@@ -12,6 +13,7 @@ import com.nhnacademy.eggplantdelivery.utill.AesGenerator;
 import com.nhnacademy.eggplantdelivery.utill.UuidGenerator;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,6 +74,11 @@ public class DefaultDeliveryService implements DeliveryService {
     @Override
     public void sendChangeDeliveryStatus(@Validated final DeliveryInfoStatusResponseDto deliveryInfoStatusResponseDto) {
         adaptor.sendChangeDeliveryStatus(deliveryInfoStatusResponseDto);
+    }
+
+    @Override
+    public List<DeliveryLocationResponseDto> retrieveDeliveryLocation(final String trackingNo) {
+        return deliveryInfoRepository.retrieveDeliveryLocationResponseDto(trackingNo);
     }
 
 }

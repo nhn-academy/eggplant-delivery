@@ -1,8 +1,10 @@
 package com.nhnacademy.eggplantdelivery.constant;
 
 /**
- * @author : 조재철
- * @since 1.0
+ * Rabbit MQ Queue 의 네이밍을 담고있는 enum 클래스 입니다.
+ *
+ * @author 김훈민, 조재철
+ * @version 1.0.0
  */
 public enum QueueConstant {
 

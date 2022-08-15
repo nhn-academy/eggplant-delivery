@@ -13,11 +13,13 @@ import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
+import com.nhnacademy.eggplantdelivery.repository.LocationRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import com.nhnacademy.eggplantdelivery.utill.AesGenerator;
 import com.nhnacademy.eggplantdelivery.utill.UuidGenerator;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,6 +38,9 @@ class DefaultDeliveryServiceTest {
     DeliveryInfoRepository deliveryInfoRepository;
 
     @MockBean
+    LocationRepository locationRepository;
+
+    @MockBean
     Sender sender;
 
     @MockBean
@@ -48,39 +53,39 @@ class DefaultDeliveryServiceTest {
     DeliveryService service;
 
     private OrderInfoRequestDto orderInfoRequestDto;
+    private DeliveryInfo deliveryInfo;
 
     @BeforeEach
     void beforeSetting() {
         orderInfoRequestDto = new OrderInfoRequestDto(
             null, "1", "1", "1", "1", "1", "1"
         );
+
+        UUID uuid = UuidGenerator.ver5UuidFromNamespaceAndBytes(("Host" + "OrderNo" + LocalDateTime.now()).getBytes(
+            StandardCharsets.UTF_8));
+
+        deliveryInfo = DeliveryInfo.builder()
+                                   .trackingNo(uuid.toString())
+                                   .status(Status.DELIVERING)
+                                   .receiverName(
+                                       aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverName()))
+                                   .receiverAddress(
+                                       aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverAddress()))
+                                   .receiverDetailAddress(aesGenerator.aesEcbEncode(
+                                       orderInfoRequestDto.getReceiverDetailAddress()))
+                                   .receiverPhone(
+                                       aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverPhone()))
+                                   .orderNo(orderInfoRequestDto.getOrderNo())
+                                   .shopHost(aesGenerator.aesEcbEncode(orderInfoRequestDto.getShopHost()))
+                                   .build();
     }
 
     @Test
     @DisplayName("운송장 번호 생성 및 주문정보 저장")
     void testCreateTrackingNo() {
-        UUID uuid = UuidGenerator.ver5UuidFromNamespaceAndBytes(("Host" + "OrderNo" + LocalDateTime.now()).getBytes(
-            StandardCharsets.UTF_8));
-
-        DeliveryInfo deliveryInfo = DeliveryInfo.builder()
-                                                .trackingNo(uuid.toString())
-                                                .status(Status.DELIVERING)
-                                                .receiverName(
-                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverName()))
-                                                .receiverAddress(
-                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverAddress()))
-                                                .receiverDetailAddress(aesGenerator.aesEcbEncode(
-                                                    orderInfoRequestDto.getReceiverDetailAddress()))
-                                                .receiverPhone(
-                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverPhone()))
-                                                .orderNo(orderInfoRequestDto.getOrderNo())
-                                                .shopHost(aesGenerator.aesEcbEncode(orderInfoRequestDto.getShopHost()))
-                                                .build();
-
-        when(deliveryInfoRepository.save(any())).thenReturn(deliveryInfo);
+        when(deliveryInfoRepository.save(any(DeliveryInfo.class))).thenReturn(deliveryInfo);
 
         service.createTrackingNo(orderInfoRequestDto);
-
 
         verify(deliveryInfoRepository).save(any(DeliveryInfo.class));
     }
@@ -93,6 +98,16 @@ class DefaultDeliveryServiceTest {
         service.sendTrackingNo(orderInfoRequestDto);
 
         verify(deliveryAdaptor).sendTrackingNo(orderInfoRequestDto);
+    }
+
+    @Test
+    @DisplayName("배송정보, 배송위치 정보 조회")
+    void testRetrieveDeliveryLocation() {
+        when(deliveryInfoRepository.retrieveDeliveryLocationResponseDto(anyString())).thenReturn(Collections.emptyList());
+
+        service.retrieveDeliveryLocation(deliveryInfo.getTrackingNo());
+
+        verify(deliveryInfoRepository, times(1)).retrieveDeliveryLocationResponseDto(anyString());
     }
 
 }

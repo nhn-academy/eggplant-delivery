@@ -2,7 +2,6 @@ package com.nhnacademy.eggplantdelivery.module;
 
 import static com.nhnacademy.eggplantdelivery.constant.ExchangeConstant.DIRECT_EXCHANGE;
 import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_REQUEST_TRACKING_NO;
-import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_RESPONSE_TRACKING_NO;
 
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +23,6 @@ public class Sender {
 
     public void send(@Validated final OrderInfoRequestDto orderInfoRequestDto) {
         rabbitTemplate.convertAndSend(DIRECT_EXCHANGE.getValue(), ROUTING_REQUEST_TRACKING_NO.getValue(),
-            orderInfoRequestDto);
-    }
-
-    public void sendTrackingNo(@Validated final OrderInfoRequestDto orderInfoRequestDto) {
-        rabbitTemplate.convertAndSend(DIRECT_EXCHANGE.getValue(), ROUTING_RESPONSE_TRACKING_NO.getValue(),
             orderInfoRequestDto);
     }
 

@@ -39,7 +39,6 @@ public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
                                        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                                        .build();
 
-
         webClient.post()
                  .uri(uriBuilder -> uriBuilder.path("/eggplant/tracking-no")
                                               .build())
@@ -48,7 +47,7 @@ public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
                      if (clientResponse.statusCode().equals(HttpStatus.OK)) {
                          return clientResponse.bodyToMono(ResponseEntity.class);
                      } else {
-                         throw new AmqpRejectAndDontRequeueException("운송장 번호 전달의 과정에서 통신 문제가 발생하였습니다." );
+                         throw new AmqpRejectAndDontRequeueException("운송장 번호 전달의 과정에서 통신 문제가 발생하였습니다.");
                      }
                  })
                  .block();

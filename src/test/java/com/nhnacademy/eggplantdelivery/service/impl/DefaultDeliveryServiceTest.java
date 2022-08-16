@@ -2,7 +2,6 @@ package com.nhnacademy.eggplantdelivery.service.impl;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -91,19 +90,10 @@ class DefaultDeliveryServiceTest {
     }
 
     @Test
-    @DisplayName("운송장 번호 전송")
-    void testSendTrackingNo() {
-        doNothing().when(deliveryAdaptor).sendTrackingNo(orderInfoRequestDto);
-
-        service.sendTrackingNo(orderInfoRequestDto);
-
-        verify(deliveryAdaptor).sendTrackingNo(orderInfoRequestDto);
-    }
-
-    @Test
     @DisplayName("배송정보, 배송위치 정보 조회")
     void testRetrieveDeliveryLocation() {
-        when(deliveryInfoRepository.retrieveDeliveryLocationResponseDto(anyString())).thenReturn(Collections.emptyList());
+        when(deliveryInfoRepository.retrieveDeliveryLocationResponseDto(anyString())).thenReturn(
+            Collections.emptyList());
 
         service.retrieveDeliveryLocation(deliveryInfo.getTrackingNo());
 

@@ -51,7 +51,6 @@ class DeliveryControllerTest {
         when(servletRequest.getServerPort()).thenReturn(8080);
 
         doNothing().when(sender).send(any(OrderInfoRequestDto.class));
-        doNothing().when(service).sendTrackingNo(any(OrderInfoRequestDto.class));
 
         OrderInfoRequestDto orderInfoRequestDto = new OrderInfoRequestDto(
             null, "1", "1", "1", "1", "1", "1");

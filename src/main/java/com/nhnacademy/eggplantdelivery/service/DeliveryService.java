@@ -15,9 +15,5 @@ public interface DeliveryService {
 
     void createTrackingNo(final OrderInfoRequestDto orderInfoRequestDto);
 
-    void sendTrackingNo(final OrderInfoRequestDto orderInfoRequestDto);
-
-    void sendChangeDeliveryStatus(final DeliveryInfoStatusResponseDto deliveryInfoStatusResponseDto);
-
     List<DeliveryLocationResponseDto> retrieveDeliveryLocation(final String trackingNo);
 }

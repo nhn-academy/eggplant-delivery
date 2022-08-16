@@ -5,11 +5,9 @@ import static com.nhnacademy.eggplantdelivery.constant.ExchangeConstant.DIRECT_E
 import static com.nhnacademy.eggplantdelivery.constant.QueueConstant.CHANGE_DELIVERY_STATUS;
 import static com.nhnacademy.eggplantdelivery.constant.QueueConstant.REQUEST_TRACKING_NO;
 import static com.nhnacademy.eggplantdelivery.constant.QueueConstant.REQUEST_TRACKING_NO_DLX;
-import static com.nhnacademy.eggplantdelivery.constant.QueueConstant.RESPONSE_TRACKING_NO;
 import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_CHANGE_DELIVERY_STATUS;
 import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_REQUEST_TRACKING_NO;
 import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_REQUEST_TRACKING_NO_DLX;
-import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_RESPONSE_TRACKING_NO;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -104,19 +102,21 @@ public class RabbitmqConfig {
     @Bean
     Queue queueRequestTrackingNo() {
         Map<String, Object> withArguments = new HashMap<>();
-        withArguments.put("x-dead-letter-exchange", "");
-        withArguments.put("x-dead-letter-routing-key", REQUEST_TRACKING_NO_DLX.getValue());
+
+        withArguments.put("x-message-ttl", 3000);
+        withArguments.put("x-dead-letter-exchange", DIRECT_EXCHANGE_DLX.getValue());
+        withArguments.put("x-dead-letter-routing-key", ROUTING_REQUEST_TRACKING_NO_DLX.getValue());
         return new Queue(REQUEST_TRACKING_NO.getValue(), false, false, false, withArguments);
     }
 
     @Bean
     Queue queueRequestTrackingNoDlx() {
-        return new Queue(REQUEST_TRACKING_NO_DLX.getValue(), false);
-    }
+        Map<String, Object> withArguments = new HashMap<>();
+        withArguments.put("x-message-ttl", 3000);
+        withArguments.put("x-dead-letter-exchange", DIRECT_EXCHANGE_DLX.getValue());
+        withArguments.put("x-dead-letter-routing-key", ROUTING_REQUEST_TRACKING_NO.getValue());
 
-    @Bean
-    Queue queueResponseTrackingNo() {
-        return new Queue(RESPONSE_TRACKING_NO.getValue(), false);
+        return new Queue(REQUEST_TRACKING_NO_DLX.getValue(), false, false, false, withArguments);
     }
 
     @Bean
@@ -151,15 +151,6 @@ public class RabbitmqConfig {
                              .to(exchangeDlx)
                              .with(ROUTING_REQUEST_TRACKING_NO_DLX.getValue());
 
-    }
-
-    @Bean
-    Binding bindResponseTrackingNo(final Queue queueResponseTrackingNo,
-        final DirectExchange exchange) {
-
-        return BindingBuilder.bind(queueResponseTrackingNo)
-                             .to(exchange)
-                             .with(ROUTING_RESPONSE_TRACKING_NO.getValue());
     }
 
     @Bean

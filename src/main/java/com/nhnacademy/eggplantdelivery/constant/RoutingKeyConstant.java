@@ -10,7 +10,6 @@ public enum RoutingKeyConstant {
 
     ROUTING_REQUEST_TRACKING_NO("routing.RequestTrackingNo"),
     ROUTING_REQUEST_TRACKING_NO_DLX("routing.RequestTrackingNoDLX"),
-    ROUTING_RESPONSE_TRACKING_NO("routing.ResponseTrackingNo"),
     ROUTING_CHANGE_DELIVERY_STATUS("routing.ChangeDeliveryStatus");
 
     private final String value;

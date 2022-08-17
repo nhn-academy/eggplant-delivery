@@ -22,15 +22,9 @@ import org.springframework.validation.annotation.Validated;
 public class Receiver {
 
     private final DeliveryService deliveryService;
-    private final Sender sender;
 
     @RabbitListener(queues = "queue.RequestTrackingNo")
     public void receiveRequestTrackingNo(@Validated final OrderInfoRequestDto orderInfoRequestDto) {
         deliveryService.createTrackingNo(orderInfoRequestDto);
     }
-
-//    @RabbitListener(queues = "queue.RequestTrackingNo.dlx")
-//    public void receiveRequestTrackingNoDls(@Validated final OrderInfoRequestDto orderInfoRequestDto) {
-//        sender.send(orderInfoRequestDto);
-//    }
 }

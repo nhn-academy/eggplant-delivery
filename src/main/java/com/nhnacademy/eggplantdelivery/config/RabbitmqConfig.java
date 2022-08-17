@@ -103,7 +103,6 @@ public class RabbitmqConfig {
     Queue queueRequestTrackingNo() {
         Map<String, Object> withArguments = new HashMap<>();
 
-        withArguments.put("x-message-ttl", 3000);
         withArguments.put("x-dead-letter-exchange", DIRECT_EXCHANGE_DLX.getValue());
         withArguments.put("x-dead-letter-routing-key", ROUTING_REQUEST_TRACKING_NO_DLX.getValue());
         return new Queue(REQUEST_TRACKING_NO.getValue(), false, false, false, withArguments);
@@ -112,9 +111,6 @@ public class RabbitmqConfig {
     @Bean
     Queue queueRequestTrackingNoDlx() {
         Map<String, Object> withArguments = new HashMap<>();
-        withArguments.put("x-message-ttl", 3000);
-        withArguments.put("x-dead-letter-exchange", DIRECT_EXCHANGE_DLX.getValue());
-        withArguments.put("x-dead-letter-routing-key", ROUTING_REQUEST_TRACKING_NO.getValue());
 
         return new Queue(REQUEST_TRACKING_NO_DLX.getValue(), false, false, false, withArguments);
     }

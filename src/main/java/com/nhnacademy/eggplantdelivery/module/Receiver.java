@@ -5,6 +5,7 @@ import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -20,15 +21,15 @@ import org.springframework.validation.annotation.Validated;
 public class Receiver {
 
     private final DeliveryService deliveryService;
+    private final Sender sender;
 
     @RabbitListener(queues = "queue.RequestTrackingNo")
     public void receiveRequestTrackingNo(@Validated final OrderInfoRequestDto orderInfoRequestDto) {
         deliveryService.createTrackingNo(orderInfoRequestDto);
     }
 
-    @RabbitListener(queues = "queue.ResponseTrackingNo")
-    public void receiveResponseTrackingNo(@Validated final OrderInfoRequestDto orderInfoRequestDto) {
-        deliveryService.sendTrackingNo(orderInfoRequestDto);
+    @RabbitListener(queues = "queue.RequestTrackingNo.dlx")
+    public void receiveRequestTrackingNoDls(@Validated final OrderInfoRequestDto orderInfoRequestDto) {
+        sender.send(orderInfoRequestDto);
     }
-
 }

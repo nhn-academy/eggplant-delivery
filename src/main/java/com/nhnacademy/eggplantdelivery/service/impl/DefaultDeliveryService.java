@@ -33,7 +33,6 @@ import org.springframework.validation.annotation.Validated;
 public class DefaultDeliveryService implements DeliveryService {
 
     private final DeliveryInfoRepository deliveryInfoRepository;
-    private final Sender sender;
     private final DeliveryAdaptor adaptor;
     private final AesGenerator aesGenerator;
 
@@ -62,18 +61,7 @@ public class DefaultDeliveryService implements DeliveryService {
                                                 .build());
 
         orderInfoRequestDto.insertTrackingNo(trackingNo);
-        sender.sendTrackingNo(orderInfoRequestDto);
-    }
-
-    @Override
-    public void sendTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
         adaptor.sendTrackingNo(orderInfoRequestDto);
-    }
-
-    @Transactional
-    @Override
-    public void sendChangeDeliveryStatus(@Validated final DeliveryInfoStatusResponseDto deliveryInfoStatusResponseDto) {
-        adaptor.sendChangeDeliveryStatus(deliveryInfoStatusResponseDto);
     }
 
     @Override

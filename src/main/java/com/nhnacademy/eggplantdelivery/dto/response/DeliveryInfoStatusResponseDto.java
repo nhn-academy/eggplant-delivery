@@ -1,5 +1,6 @@
 package com.nhnacademy.eggplantdelivery.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
@@ -30,6 +31,7 @@ public class DeliveryInfoStatusResponseDto {
     @NotBlank(message = "쇼핑몰 호스트 주소는 필수 사항 입니다.")
     private String shopHost;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime arrivalTime;
 
 }

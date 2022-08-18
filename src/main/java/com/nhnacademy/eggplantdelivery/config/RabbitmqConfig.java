@@ -9,6 +9,7 @@ import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTIN
 import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_REQUEST_TRACKING_NO;
 import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_REQUEST_TRACKING_NO_DLX;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.amqp.core.Binding;
@@ -96,7 +97,8 @@ public class RabbitmqConfig {
      */
     @Bean
     public MessageConverter messageConverter() {
-        return new Jackson2JsonMessageConverter();
+        ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+        return new Jackson2JsonMessageConverter(objectMapper);
     }
 
     @Bean

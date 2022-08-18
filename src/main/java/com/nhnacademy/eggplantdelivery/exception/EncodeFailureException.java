@@ -8,9 +8,9 @@ package com.nhnacademy.eggplantdelivery.exception;
  */
 public class EncodeFailureException extends RuntimeException {
 
-    private static final String DECODE_ERROR_MESSAGE = "정보 복호화에 실패했습니다.";
+    private static final String ENCODE_ERROR_MESSAGE = "정보 복호화에 실패했습니다.";
 
     public EncodeFailureException() {
-        super(DECODE_ERROR_MESSAGE);
+        super(ENCODE_ERROR_MESSAGE);
     }
 }

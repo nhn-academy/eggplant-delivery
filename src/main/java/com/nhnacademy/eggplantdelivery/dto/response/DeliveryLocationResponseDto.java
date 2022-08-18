@@ -1,5 +1,6 @@
 package com.nhnacademy.eggplantdelivery.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class DeliveryLocationResponseDto {
     private Status status;
     private LocalDateTime completionTime;
     private Long locationNo;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime arrivalTime;
 
 }

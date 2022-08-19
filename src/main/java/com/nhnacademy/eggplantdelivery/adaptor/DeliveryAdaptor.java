@@ -1,7 +1,7 @@
 package com.nhnacademy.eggplantdelivery.adaptor;
 
-import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
-import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
+import com.nhnacademy.eggplantdelivery.dto.request.CreatedTrackingNoDto;
+import com.nhnacademy.eggplantdelivery.dto.request.DeliveryInfoStatusRequestDto;
 import org.springframework.validation.annotation.Validated;
 
 /**
@@ -12,8 +12,9 @@ import org.springframework.validation.annotation.Validated;
  */
 public interface DeliveryAdaptor {
 
-    void sendTrackingNo(@Validated final OrderInfoRequestDto orderInfoRequestDto);
+    void sendTrackingNo(@Validated final CreatedTrackingNoDto createdTrackingNoDto, final String shopHost);
 
-    void sendChangeDeliveryStatus(@Validated final DeliveryInfoStatusResponseDto deliveryInfoStatusResponseDto);
+    void sendChangeDeliveryStatus(@Validated final DeliveryInfoStatusRequestDto deliveryInfoStatusRequestDto,
+        final String shopHost);
 
 }

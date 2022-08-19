@@ -3,9 +3,10 @@ package com.nhnacademy.eggplantdelivery.adaptor.impl;
 import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
 import com.nhnacademy.eggplantdelivery.dto.request.CreatedTrackingNoDto;
 import com.nhnacademy.eggplantdelivery.dto.request.DeliveryInfoStatusRequestDto;
-import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
+import com.nhnacademy.eggplantdelivery.utill.AesGenerator;
 import java.util.Objects;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.http.HttpHeaders;
@@ -22,20 +23,19 @@ import org.springframework.web.reactive.function.client.WebClient;
  * @version 1.0.0
  */
 @Component
+@RequiredArgsConstructor
 @Slf4j
 public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
 
+    private final AesGenerator aesGenerator;
     public static final String PROTOCOL = "http://";
 
     @Override
-    public void sendTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
-
-        CreatedTrackingNoDto createdTrackingNoDto =
-            new CreatedTrackingNoDto(Objects.requireNonNull(orderInfoRequestDto.getTrackingNo()).toString(),
-                orderInfoRequestDto.getOrderNo());
+    public void sendTrackingNo(final CreatedTrackingNoDto createdTrackingNoDto, String shopHost) {
 
         WebClient webClient = WebClient.builder()
-                                       .baseUrl(PROTOCOL + orderInfoRequestDto.getShopHost() + ":8080")
+                                       .baseUrl(PROTOCOL + shopHost
+                                           + ":7072")
                                        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                                        .build();
 
@@ -54,18 +54,12 @@ public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
     }
 
     @Override
-    public void sendChangeDeliveryStatus(final DeliveryInfoStatusResponseDto deliveryInfoStatusResponseDto) {
+    public void sendChangeDeliveryStatus(final DeliveryInfoStatusRequestDto deliveryInfoStatusRequestDto, String shopHost) {
         WebClient webClient = WebClient.builder()
-                                       .baseUrl(PROTOCOL + deliveryInfoStatusResponseDto.getShopHost() + ":8080")
+                                       .baseUrl(PROTOCOL + aesGenerator.aesEcbDecode(
+                                           shopHost) + ":7072")
                                        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                                        .build();
-
-        DeliveryInfoStatusRequestDto deliveryInfoStatusRequestDto
-            = DeliveryInfoStatusRequestDto.builder()
-                                          .orderNo(deliveryInfoStatusResponseDto.getOrderNo())
-                                          .status(deliveryInfoStatusResponseDto.getStatus().toString())
-                                          .arrivalTime(deliveryInfoStatusResponseDto.getArrivalTime())
-                                          .build();
 
         webClient.patch()
                  .uri(uriBuilder -> uriBuilder.path("/eggplant/delivery-info")

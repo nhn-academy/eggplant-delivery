@@ -1,12 +1,13 @@
 package com.nhnacademy.eggplantdelivery.service.impl;
 
 import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
+import com.nhnacademy.eggplantdelivery.dto.request.CreatedTrackingNoDto;
+import com.nhnacademy.eggplantdelivery.dto.request.DeliveryInfoStatusRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
 import com.nhnacademy.eggplantdelivery.dto.response.DeliveryLocationResponseDto;
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
-import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import com.nhnacademy.eggplantdelivery.utill.AesGenerator;
@@ -14,12 +15,12 @@ import com.nhnacademy.eggplantdelivery.utill.UuidGenerator;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 
 /**
  * 배송 요청과 Rabbit MQ 관련 로직을 처리하는 클래스 입니다.
@@ -61,12 +62,29 @@ public class DefaultDeliveryService implements DeliveryService {
                                                 .build());
 
         orderInfoRequestDto.insertTrackingNo(trackingNo);
-        adaptor.sendTrackingNo(orderInfoRequestDto);
+
+        CreatedTrackingNoDto createdTrackingNoDto =
+            new CreatedTrackingNoDto(Objects.requireNonNull(orderInfoRequestDto.getTrackingNo()).toString(),
+                orderInfoRequestDto.getOrderNo());
+
+        adaptor.sendTrackingNo(createdTrackingNoDto, orderInfoRequestDto.getShopHost());
     }
 
     @Override
     public List<DeliveryLocationResponseDto> retrieveDeliveryLocation(final String trackingNo) {
         return deliveryInfoRepository.retrieveDeliveryLocationResponseDto(trackingNo);
+    }
+
+    @Override
+    public void transmitDeliveryStatus(DeliveryInfoStatusResponseDto deliveryInfoStatusResponseDto) {
+        DeliveryInfoStatusRequestDto deliveryInfoStatusRequestDto
+            = DeliveryInfoStatusRequestDto.builder()
+                                          .orderNo(deliveryInfoStatusResponseDto.getOrderNo())
+                                          .status(deliveryInfoStatusResponseDto.getStatus().toString())
+                                          .arrivalTime(deliveryInfoStatusResponseDto.getArrivalTime())
+                                          .build();
+
+        adaptor.sendChangeDeliveryStatus(deliveryInfoStatusRequestDto, deliveryInfoStatusResponseDto.getShopHost());
     }
 
 }

@@ -45,21 +45,38 @@ public class DefaultDeliveryService implements DeliveryService {
                 StandardCharsets.UTF_8));
 
         deliveryInfoRepository.save(DeliveryInfo.builder()
-                                                .trackingNo(trackingNo.toString())
-                                                .status(Status.READY)
-                                                .orderNo(orderInfoRequestDto.getOrderNo())
-                                                .receiverName(
-                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverName()))
-                                                .receiverAddress(
-                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverAddress()))
-                                                .receiverDetailAddress(
-                                                    aesGenerator.aesEcbEncode(
-                                                        orderInfoRequestDto.getReceiverDetailAddress()))
-                                                .receiverPhone(
-                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverPhone()))
-                                                .shopHost(
-                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getShopHost()))
-                                                .build());
+            .trackingNo(trackingNo.toString())
+            .status(Status.READY)
+            .orderNo("orderInfoRequestDto.getOrderNo()")
+            .receiverName(
+                aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverName()))
+            .receiverAddress(
+                aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverAddress()))
+            .receiverDetailAddress(
+                aesGenerator.aesEcbEncode(
+                    "a"))
+            .receiverPhone(
+                aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverPhone()))
+            .shopHost(
+                aesGenerator.aesEcbEncode(orderInfoRequestDto.getShopHost()))
+            .build());
+
+//        deliveryInfoRepository.save(DeliveryInfo.builder()
+//                                                .trackingNo(trackingNo.toString())
+//                                                .status(Status.READY)
+//                                                .orderNo(orderInfoRequestDto.getOrderNo())
+//                                                .receiverName(
+//                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverName()))
+//                                                .receiverAddress(
+//                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverAddress()))
+//                                                .receiverDetailAddress(
+//                                                    aesGenerator.aesEcbEncode(
+//                                                        orderInfoRequestDto.getReceiverDetailAddress()))
+//                                                .receiverPhone(
+//                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverPhone()))
+//                                                .shopHost(
+//                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getShopHost()))
+//                                                .build());
 
         orderInfoRequestDto.insertTrackingNo(trackingNo);
 

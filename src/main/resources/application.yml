@@ -14,12 +14,15 @@ secure-key-manager:
 aes:
   algorithm: AES/ECB/PKCS5Padding
 
-spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
   jpa:
     show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
 
   profiles:
     group:
@@ -37,9 +40,19 @@ spring:
           max-attempts: 2
           multiplier: 1
 
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
 datasource:
-  driver-class-name: com.mysql.cj.jdbc.Driver
-  url: 2016554d23614b28b1ffb17e68a0d640
+  classname: com.mysql.cj.jdbc.MysqlDataSource
+  master: 2016554d23614b28b1ffb17e68a0d640
+  slave : jdbc:mysql://133.186.211.156:3306/eggplant_delivery_slave
+  locale: jdbc:mysql://133.186.211.156:3306/eggplant-locale
   username: eggplant
   password: e55472d5d7ea4bbdb6f3149e1ed597e5
 server:
@@ -52,8 +65,10 @@ spring:
       on-profile: common
 
 datasource:
-  driver-class-name: com.mysql.cj.jdbc.Driver
-  url: 2016554d23614b28b1ffb17e68a0d640
+  classname: com.mysql.cj.jdbc.MysqlDataSource
+  master: 2016554d23614b28b1ffb17e68a0d640
+  slave : jdbc:mysql://133.186.211.156:3306/eggplant_delivery_slave
+  locale: jdbc:mysql://133.186.211.156:3306/eggplant-locale
   username: eggplant
   password: e55472d5d7ea4bbdb6f3149e1ed597e5
 
@@ -65,11 +80,12 @@ spring:
       on-profile: testdb
 
 datasource:
-  driver-class-name: com.mysql.cj.jdbc.Driver
-  url: 2016554d23614b28b1ffb17e68a0d640
+  classname: com.mysql.cj.jdbc.MysqlDataSource
+  master: 2016554d23614b28b1ffb17e68a0d640
+  slave : jdbc:mysql://133.186.211.156:3306/eggplant_delivery_slave
+  locale: jdbc:mysql://133.186.211.156:3306/eggplant-locale
   username: eggplant
   password: e55472d5d7ea4bbdb6f3149e1ed597e5
-
 ---
 
 spring:
@@ -78,7 +94,9 @@ spring:
       on-profile: proddb
 
 datasource:
-  driver-class-name: com.mysql.cj.jdbc.Driver
-  url: 8fa7304edb474141a7197065bc5edfeb
+  classname: com.mysql.cj.jdbc.MysqlDataSource
+  master: 2016554d23614b28b1ffb17e68a0d640
+  slave : jdbc:mysql://133.186.211.156:3306/eggplant_delivery_slave
+  locale: jdbc:mysql://133.186.211.156:3306/eggplant-locale
   username: eggplant
   password: e55472d5d7ea4bbdb6f3149e1ed597e5

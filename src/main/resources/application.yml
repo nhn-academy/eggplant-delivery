@@ -1,3 +1,6 @@
+server:
+  port: 9090
+
 rabbitmq:
   host: b2d2bb80e0f843e396337084925a54fc
   port: 5672
@@ -18,14 +21,10 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
   jpa:
     show-sql: true
 
-  profiles:
-    group:
-      local: common, testdb
-      dev: common, devdb
-      prod: common, proddb
   rabbitmq:
     listener:
       simple:
@@ -37,19 +36,12 @@ spring:
           max-attempts: 2
           multiplier: 1
 
-datasource:
-  driver-class-name: com.mysql.cj.jdbc.Driver
-  url: 2016554d23614b28b1ffb17e68a0d640
-  username: eggplant
-  password: e55472d5d7ea4bbdb6f3149e1ed597e5
-server:
-  port: 9090
 ---
 
 spring:
   config:
     activate:
-      on-profile: common
+      on-profile: dev
 
 datasource:
   driver-class-name: com.mysql.cj.jdbc.Driver
@@ -62,20 +54,7 @@ datasource:
 spring:
   config:
     activate:
-      on-profile: testdb
-
-datasource:
-  driver-class-name: com.mysql.cj.jdbc.Driver
-  url: 2016554d23614b28b1ffb17e68a0d640
-  username: eggplant
-  password: e55472d5d7ea4bbdb6f3149e1ed597e5
-
----
-
-spring:
-  config:
-    activate:
-      on-profile: proddb
+      on-profile: prod
 
 datasource:
   driver-class-name: com.mysql.cj.jdbc.Driver

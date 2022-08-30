@@ -26,14 +26,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
 
     private final AesGenerator aesGenerator;
-    public static final String PROTOCOL = "http://";
 
     @Override
     public void sendTrackingNo(final CreatedTrackingNoDto createdTrackingNoDto, String shopHost) {
 
         WebClient webClient = WebClient.builder()
-                                       .baseUrl(PROTOCOL + shopHost
-                                           + ":7072")
+                                       .baseUrl(shopHost)
                                        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                                        .build();
 
@@ -55,8 +53,7 @@ public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
     public void sendChangeDeliveryStatus(final DeliveryInfoStatusRequestDto deliveryInfoStatusRequestDto,
         String shopHost) {
         WebClient webClient = WebClient.builder()
-                                       .baseUrl(PROTOCOL + aesGenerator.aesEcbDecode(
-                                           shopHost) + ":7072")
+                                       .baseUrl(aesGenerator.aesEcbDecode(shopHost))
                                        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                                        .build();
 

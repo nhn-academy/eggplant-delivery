@@ -3,9 +3,7 @@ package com.nhnacademy.eggplantdelivery.adaptor.impl;
 import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
 import com.nhnacademy.eggplantdelivery.dto.request.CreatedTrackingNoDto;
 import com.nhnacademy.eggplantdelivery.dto.request.DeliveryInfoStatusRequestDto;
-import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
 import com.nhnacademy.eggplantdelivery.utill.AesGenerator;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
@@ -54,7 +52,8 @@ public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
     }
 
     @Override
-    public void sendChangeDeliveryStatus(final DeliveryInfoStatusRequestDto deliveryInfoStatusRequestDto, String shopHost) {
+    public void sendChangeDeliveryStatus(final DeliveryInfoStatusRequestDto deliveryInfoStatusRequestDto,
+        String shopHost) {
         WebClient webClient = WebClient.builder()
                                        .baseUrl(PROTOCOL + aesGenerator.aesEcbDecode(
                                            shopHost) + ":7072")

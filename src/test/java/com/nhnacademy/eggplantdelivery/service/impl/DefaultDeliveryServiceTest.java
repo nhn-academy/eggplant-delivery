@@ -75,7 +75,7 @@ class DefaultDeliveryServiceTest {
                                    .receiverPhone(
                                        aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverPhone()))
                                    .orderNo(orderInfoRequestDto.getOrderNo())
-                                   .shopHost(aesGenerator.aesEcbEncode(orderInfoRequestDto.getShopHost()))
+                                   .shopHost(aesGenerator.aesEcbEncode(orderInfoRequestDto.getSuccessHost()))
                                    .build();
     }
 

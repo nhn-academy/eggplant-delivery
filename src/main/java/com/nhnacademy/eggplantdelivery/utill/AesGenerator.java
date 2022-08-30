@@ -27,7 +27,7 @@ public class AesGenerator {
      * @param userInformationProtectionValue salt 를 위한 일반 텍스트 문자열입니다.
      */
     public AesGenerator(String userInformationProtectionValue,
-                        @Value("${aes.algorithm}") String transformation) {
+        @Value("${aes.algorithm}") String transformation) {
         this.secretKeySpec =
             new SecretKeySpec(userInformationProtectionValue.getBytes(StandardCharsets.UTF_8),
                 "AES");

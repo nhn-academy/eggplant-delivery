@@ -4,9 +4,7 @@ import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.response.DeliveryLocationResponseDto;
 import com.nhnacademy.eggplantdelivery.module.Sender;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
-import com.nhnacademy.eggplantdelivery.utill.AesGenerator;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,10 +40,8 @@ public class DeliveryController {
      * @author 김훈민, 조재철
      */
     @PostMapping("/tracking-no")
-    public ResponseEntity<Void> createTrackingNo(@RequestBody final OrderInfoRequestDto orderInfoRequestDto,
-                                                 final HttpServletRequest servletRequest) {
+    public ResponseEntity<Void> createTrackingNo(@RequestBody final OrderInfoRequestDto orderInfoRequestDto) {
 
-        orderInfoRequestDto.insertShopHost(servletRequest.getRemoteHost());
         sender.send(orderInfoRequestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)

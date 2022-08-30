@@ -36,15 +36,15 @@ public class OrderInfoRequestDto {
     @NotBlank(message = "해당 주문에 대한 주문 번호는 필수 입니다.")
     private String orderNo;
 
-    @Nullable
-    private String shopHost;
+    @NotBlank
+    private String successHost;
 
     public void insertTrackingNo(final UUID createdTrackingNo) {
         this.trackingNo = createdTrackingNo;
     }
 
     public void insertShopHost(final String shopHost) {
-        this.shopHost = shopHost;
+        this.successHost = shopHost;
     }
 
 }

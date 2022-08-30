@@ -15,6 +15,7 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
  * @version 1.0.0
  */
 public class DeliveryInfoRepositoryImpl extends QuerydslRepositorySupport implements CustomDeliveryInfoRepository {
+
     QDeliveryInfo deliveryInfo = QDeliveryInfo.deliveryInfo;
     QLocation location = QLocation.location;
 

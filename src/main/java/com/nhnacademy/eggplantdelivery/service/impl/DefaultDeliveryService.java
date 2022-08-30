@@ -41,7 +41,7 @@ public class DefaultDeliveryService implements DeliveryService {
     @Override
     public void createTrackingNo(final OrderInfoRequestDto orderInfoRequestDto) {
         UUID trackingNo = UuidGenerator.ver5UuidFromNamespaceAndBytes(
-            (orderInfoRequestDto.getShopHost() + orderInfoRequestDto.getOrderNo() + LocalDateTime.now()).getBytes(
+            (orderInfoRequestDto.getSuccessHost() + orderInfoRequestDto.getOrderNo() + LocalDateTime.now()).getBytes(
                 StandardCharsets.UTF_8));
 
         deliveryInfoRepository.save(DeliveryInfo.builder()
@@ -58,7 +58,7 @@ public class DefaultDeliveryService implements DeliveryService {
                                                 .receiverPhone(
                                                     aesGenerator.aesEcbEncode(orderInfoRequestDto.getReceiverPhone()))
                                                 .shopHost(
-                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getShopHost()))
+                                                    aesGenerator.aesEcbEncode(orderInfoRequestDto.getSuccessHost()))
                                                 .build());
 
         orderInfoRequestDto.insertTrackingNo(trackingNo);
@@ -67,7 +67,7 @@ public class DefaultDeliveryService implements DeliveryService {
             new CreatedTrackingNoDto(Objects.requireNonNull(orderInfoRequestDto.getTrackingNo()).toString(),
                 orderInfoRequestDto.getOrderNo());
 
-        adaptor.sendTrackingNo(createdTrackingNoDto, orderInfoRequestDto.getShopHost());
+        adaptor.sendTrackingNo(createdTrackingNoDto, orderInfoRequestDto.getSuccessHost());
     }
 
     @Override

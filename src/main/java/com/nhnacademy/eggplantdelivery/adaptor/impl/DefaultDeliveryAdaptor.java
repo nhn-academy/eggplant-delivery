@@ -35,10 +35,11 @@ public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
                                        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                                        .build();
 
-        webClient.post()
-                 .uri(uriBuilder -> uriBuilder.path("/eggplant/tracking-no")
-                                              .build())
-                 .bodyValue(createdTrackingNoDto)
+        webClient.get()
+                 .uri(uriBuilder -> uriBuilder.path("/eggplant/tracking-no/{trackingNo}")
+                                              .queryParam("orderNo", createdTrackingNoDto.getOrderNo())
+                                              .build(createdTrackingNoDto.getTrackingNo())
+                 )
                  .exchangeToMono(clientResponse -> {
                      if (clientResponse.statusCode().equals(HttpStatus.OK)) {
                          return clientResponse.bodyToMono(ResponseEntity.class);

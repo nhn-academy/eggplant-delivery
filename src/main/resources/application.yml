@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 9090
 
 rabbitmq:
   host: b2d2bb80e0f843e396337084925a54fc
@@ -14,7 +14,9 @@ secure-key-manager:
   local-key: gaship
   user-info-protection-key: 8174a0ef88454634911b8aa84988ae12
 
-logging.level.root: debug
+logging:
+  level:
+    root: error
 
 aes:
   algorithm: AES/ECB/PKCS5Padding

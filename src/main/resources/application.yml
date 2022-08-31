@@ -14,6 +14,8 @@ secure-key-manager:
   local-key: gaship
   user-info-protection-key: 8174a0ef88454634911b8aa84988ae12
 
+logging.level.root: debug
+
 aes:
   algorithm: AES/ECB/PKCS5Padding
 
@@ -25,16 +27,16 @@ spring:
   jpa:
     show-sql: true
 
-  rabbitmq:
-    listener:
-      simple:
-        acknowledge-mode: auto
-        retry:
-          enabled: true
-          initial-interval: 500ms
-          max-interval: 1s
-          max-attempts: 2
-          multiplier: 1
+#  rabbitmq:
+#    listener:
+#      simple:
+#        acknowledge-mode: auto
+#        retry:
+#          enabled: true
+#          initial-interval: 500ms
+#          max-interval: 1s
+#          max-attempts: 2
+#          multiplier: 1
 
 ---
 

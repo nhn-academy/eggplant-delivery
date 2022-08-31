@@ -43,8 +43,4 @@ public class OrderInfoRequestDto {
         this.trackingNo = createdTrackingNo;
     }
 
-    public void insertShopHost(final String shopHost) {
-        this.successHost = shopHost;
-    }
-
 }

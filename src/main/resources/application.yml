@@ -14,6 +14,10 @@ secure-key-manager:
   local-key: gaship
   user-info-protection-key: 8174a0ef88454634911b8aa84988ae12
 
+logging:
+  level:
+    root: error
+
 aes:
   algorithm: AES/ECB/PKCS5Padding
 

@@ -1,8 +1,9 @@
 # 🚚 Eggplant-Delivery
 > Eggplant Delivery 서비스는 애플리케이션 이용에 필요한 API 를 제공함으로써   
-> 클라이언트의 요청을 받아 그에 상응하는 서비스를 수행합니다.
+> 클라이언트의 요청을 받아 운송장 번호 발급, 배송 정보 조회 등을 할 수 있습니다.
 
 # Getting Started
+
 - 해당 프로젝트를 다운로드하거나 `git clone` 을 통해 실행 환경을 구성한 뒤, 다음과 같은 명령어를 실행합니다.
 
 
@@ -14,7 +15,6 @@
 
 ![배송](https://user-images.githubusercontent.com/53285909/184058391-1a8d0582-a190-456c-b1a7-40b7dbf6159a.svg)
 
-- NGINX 차후 구현 예정
 
 ![image](https://user-images.githubusercontent.com/53285909/184069587-cee635ea-0f6c-454a-a004-6cbaa69abd1f.png)
 
@@ -22,11 +22,14 @@
 
 - 운송장 번호 관리 (Co-authored-by: [@김훈민](http://github.com/bunsung92), [@조재철](https://github.com/JoisFe))
   - 운송장 번호 생성
+  - 운송장 번호 전송
+  - 운송장 번호 실패 처리 (구현중...)
 
 - 배송 정보 관리 (Co-authored-by: [@김훈민](http://github.com/bunsung92), [@조재철](https://github.com/JoisFe))
-  - 배송 정보 추가
-  - 배송 정보 수정
+  - 배송 정보 추가 
+  - 배송 정보 수정 (배송 상태 변경)
   - 배송 정보 삭제 (Hard Delete 시점 구현중...)
+  - 배송 정보 조회 (현 위치등을 조회)
 
 ## Tech Stack
 ### Build Tools
@@ -36,6 +39,7 @@
 ### Datebases
 
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=MySQL&logoColor=white)
+![H2](https://img.shields.io/badge/H2-4479A1?style=flat&logo=SteamDB&logoColor=white)
 
 ### DevOps
 
@@ -47,10 +51,11 @@
 ### Frameworks
 
 ![SpringBoot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat&logo=SpringBoot&logoColor=white)
+![Spring Batch](https://img.shields.io/badge/Spring%20Batch-6DB33F?style=flat&logo=Spring&logoColor=white)
 
 ### Languages
 
-![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white&style=flat)
+![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=Java&logoColor=white&style=flat)
 
 ### Testing Tools
 
@@ -69,9 +74,11 @@
 - `develop`: 개발 단계가 끝난 부분에 대해서 merge 내용 포함
 - `feature`: 기능 개발 단계
 - `hotfix`: merge 후 발생한 버그 및 수정사항 반영 시 사용
+- `chore` : 설정 파일 등등 기타사항 변경시 사용
 
 ## ERD
-![image](https://user-images.githubusercontent.com/53285909/184069243-7778ccaf-c36d-4562-ac86-2f3debc66599.png)
+![image](https://user-images.githubusercontent.com/53285909/184798692-d7b28b95-f744-4946-9eb1-2859c8802b88.png)
+
 ## Contributors
 
 <a href="https://github.com/nhn-academy/eggplant-delivery/graphs/contributors">

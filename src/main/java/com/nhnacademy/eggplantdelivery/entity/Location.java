@@ -40,6 +40,9 @@ public class Location {
     @Column(name = "arrival_time")
     private LocalDateTime arrivalTime;
 
+    @Column(name = "middle_location")
+    private String middleLocation;
+
     /**
      * Location 고유키, 복합키를 담은 클래스 입니다.
      *

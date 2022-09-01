@@ -84,7 +84,9 @@ public class DefaultDeliveryService implements DeliveryService {
                                           .arrivalTime(deliveryInfoStatusResponseDto.getArrivalTime())
                                           .build();
 
-        adaptor.sendChangeDeliveryStatus(deliveryInfoStatusRequestDto, deliveryInfoStatusResponseDto.getShopHost());
+        String shopHost = aesGenerator.aesEcbDecode(deliveryInfoStatusResponseDto.getShopHost());
+
+        adaptor.sendChangeDeliveryStatus(deliveryInfoStatusRequestDto, shopHost);
     }
 
 }

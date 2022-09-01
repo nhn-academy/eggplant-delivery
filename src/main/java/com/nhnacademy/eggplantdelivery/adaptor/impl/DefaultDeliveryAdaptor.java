@@ -3,7 +3,6 @@ package com.nhnacademy.eggplantdelivery.adaptor.impl;
 import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
 import com.nhnacademy.eggplantdelivery.dto.request.CreatedTrackingNoDto;
 import com.nhnacademy.eggplantdelivery.dto.request.DeliveryInfoStatusRequestDto;
-import com.nhnacademy.eggplantdelivery.utill.AesGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
@@ -25,10 +24,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Slf4j
 public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
 
-    private final AesGenerator aesGenerator;
-
     @Override
-    public void sendTrackingNo(final CreatedTrackingNoDto createdTrackingNoDto, String shopHost) {
+    public void sendTrackingNo(final CreatedTrackingNoDto createdTrackingNoDto,
+                               final String shopHost) {
 
         WebClient webClient = WebClient.builder()
                                        .baseUrl(shopHost)
@@ -52,16 +50,19 @@ public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
 
     @Override
     public void sendChangeDeliveryStatus(final DeliveryInfoStatusRequestDto deliveryInfoStatusRequestDto,
-        String shopHost) {
+                                         final String shopHost) {
+
         WebClient webClient = WebClient.builder()
-                                       .baseUrl(aesGenerator.aesEcbDecode(shopHost))
+                                       .baseUrl(shopHost)
                                        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                                        .build();
 
-        webClient.patch()
+        webClient.get()
                  .uri(uriBuilder -> uriBuilder.path("/eggplant/delivery-info")
+                                              .queryParam("orderNo", deliveryInfoStatusRequestDto.getOrderNo())
+                                              .queryParam("status", deliveryInfoStatusRequestDto.getStatus())
+                                              .queryParam("arrivalTime", deliveryInfoStatusRequestDto.getArrivalTime())
                                               .build())
-                 .bodyValue(deliveryInfoStatusRequestDto)
                  .exchangeToMono(clientResponse -> {
                      if (clientResponse.statusCode().equals(HttpStatus.OK)) {
                          return clientResponse.bodyToMono(ResponseEntity.class);

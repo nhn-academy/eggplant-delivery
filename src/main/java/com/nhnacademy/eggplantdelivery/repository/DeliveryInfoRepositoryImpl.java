@@ -32,7 +32,7 @@ public class DeliveryInfoRepositoryImpl extends QuerydslRepositorySupport implem
             .select(Projections.constructor(DeliveryLocationResponseDto.class,
                 deliveryInfo.status,
                 deliveryInfo.completionTime,
-                location.pk.locationNo,
+                location.middleLocation,
                 location.arrivalTime))
             .fetch();
     }

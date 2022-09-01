@@ -20,7 +20,7 @@ public class DeliveryLocationResponseDto {
 
     private Status status;
     private LocalDateTime completionTime;
-    private Long locationNo;
+    private String middleLocation;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime arrivalTime;
 

@@ -28,6 +28,8 @@ public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
     public void sendTrackingNo(final CreatedTrackingNoDto createdTrackingNoDto,
                                final String shopHost) {
 
+        log.info("shopHost:{}", shopHost);
+        log.info("createdTrackingNoDto:{}", createdTrackingNoDto);
         WebClient webClient = WebClient.builder()
                                        .baseUrl(shopHost)
                                        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)

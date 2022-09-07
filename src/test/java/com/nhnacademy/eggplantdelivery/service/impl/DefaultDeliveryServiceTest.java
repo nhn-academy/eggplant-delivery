@@ -10,7 +10,7 @@ import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.entity.DeliveryInfo;
 import com.nhnacademy.eggplantdelivery.entity.status.Status;
-import com.nhnacademy.eggplantdelivery.module.Sender;
+import com.nhnacademy.eggplantdelivery.module.Publisher;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.repository.LocationRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
@@ -40,7 +40,7 @@ class DefaultDeliveryServiceTest {
     LocationRepository locationRepository;
 
     @MockBean
-    Sender sender;
+    Publisher publisher;
 
     @MockBean
     DeliveryAdaptor deliveryAdaptor;

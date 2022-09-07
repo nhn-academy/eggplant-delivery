@@ -2,7 +2,7 @@ package com.nhnacademy.eggplantdelivery.controller;
 
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
 import com.nhnacademy.eggplantdelivery.dto.response.DeliveryLocationResponseDto;
-import com.nhnacademy.eggplantdelivery.module.Sender;
+import com.nhnacademy.eggplantdelivery.module.Publisher;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import java.util.List;
 import javax.validation.constraints.Min;
@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class DeliveryController {
 
-    private final Sender sender;
+    private final Publisher publisher;
     private final DeliveryService deliveryService;
 
     /**
@@ -41,8 +41,7 @@ public class DeliveryController {
      */
     @PostMapping("/tracking-no")
     public ResponseEntity<Void> createTrackingNo(@RequestBody final OrderInfoRequestDto orderInfoRequestDto) {
-
-        sender.send(orderInfoRequestDto);
+        publisher.send(orderInfoRequestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                              .build();

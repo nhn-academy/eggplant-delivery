@@ -17,7 +17,7 @@ import org.springframework.validation.annotation.Validated;
  */
 @RequiredArgsConstructor
 @Component
-public class Sender {
+public class Publisher {
 
     private final RabbitTemplate rabbitTemplate;
 

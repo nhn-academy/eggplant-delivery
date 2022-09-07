@@ -6,6 +6,7 @@ import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -18,8 +19,9 @@ import org.springframework.validation.annotation.Validated;
 @RequiredArgsConstructor
 @Component
 @Slf4j
-public class Receiver {
+public class Consumer {
 
+    private final RetryTemplate retryTemplate;
     private final DeliveryService deliveryService;
 
     @RabbitListener(queues = "queue.RequestTrackingNo")

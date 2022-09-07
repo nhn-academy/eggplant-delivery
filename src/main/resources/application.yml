@@ -14,6 +14,9 @@ secure-key-manager:
   local-key: gaship
   user-info-protection-key: 8174a0ef88454634911b8aa84988ae12
 
+log-crash:
+  project-name: ba486da0545d4479a267976ee3ad4821
+
 logging:
   level:
     root: info
@@ -34,11 +37,11 @@ spring:
       simple:
         acknowledge-mode: auto
         retry:
-          enabled: true
-          initial-interval: 500ms
-          max-interval: 1s
-          max-attempts: 2
-          multiplier: 1
+          enabled: true #재시도
+          initial-interval: 500ms # 최초 메시지 처리 실패 후 재시도까지의 인터벌
+          max-interval: 1s # 최대 재시도 인터벌
+          max-attempts: 2 # 최대 재시도 횟수
+          multiplier: 1 # 이전 interval * multiplier = 다음 interval
 
 ---
 

@@ -36,11 +36,15 @@ public class OrderInfoRequestDto {
     @NotBlank(message = "해당 주문에 대한 주문 번호는 필수 입니다.")
     private String orderNo;
 
-    @NotBlank
+    @NotBlank(message = "호스트 주소는 필수 입니다.")
     private String successHost;
 
-    public void insertTrackingNo(final UUID createdTrackingNo) {
-        this.trackingNo = createdTrackingNo;
+    @Override
+    public String toString() {
+        return "OrderInfoRequestDto{"
+            + "orderNo='" + orderNo + '\''
+            + ", host='" + successHost + '\''
+            + '}';
     }
 
 }

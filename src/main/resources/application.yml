@@ -32,13 +32,21 @@ spring:
   rabbitmq:
     listener:
       simple:
-        acknowledge-mode: auto
+        acknowledge-mode: auto # 해당 설정은 메시지에 대한 클라이언트 ack 없이 전송 후에 바로 큐에서 삭제합니다. https://shuiky.tistory.com/entry/RabbitMQ-consumer-%EC%84%A4%EC%A0%95-%EB%B0%8F-prefetch-count 참조
         retry:
-          enabled: true
-          initial-interval: 500ms
-          max-interval: 1s
-          max-attempts: 2
-          multiplier: 1
+          enabled: true # 재시도
+          initial-interval: 500ms # 최초 메시지 처리 실패 후 재시도까지의 인터벌
+          max-interval: 1s # 최대 재시도 인터벌
+          max-attempts: 2 # 최대 재시도 횟수
+          multiplier: 1 # 이전 interval * multiplier = 다음 interval
+
+eggplant:
+  project-name: d2773b9d61644a4797dc41750b09f3ea
+  project-version: 1.0.0
+  log-version: v2
+  log-source: http
+  localhost: localhost
+  log-type: nelo2-log
 
 ---
 

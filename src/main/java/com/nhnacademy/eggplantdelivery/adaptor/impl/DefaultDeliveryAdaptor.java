@@ -1,11 +1,19 @@
 package com.nhnacademy.eggplantdelivery.adaptor.impl;
 
 import com.nhnacademy.eggplantdelivery.adaptor.DeliveryAdaptor;
+import com.nhnacademy.eggplantdelivery.config.AuthenticationConfig;
 import com.nhnacademy.eggplantdelivery.dto.request.CreatedTrackingNoDto;
 import com.nhnacademy.eggplantdelivery.dto.request.DeliveryInfoStatusRequestDto;
+import com.nhnacademy.eggplantdelivery.dto.request.LogRequest;
+import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
+import com.nhnacademy.eggplantdelivery.dto.response.DeliveryInfoStatusResponseDto;
+import com.nhnacademy.eggplantdelivery.dto.response.LogServerResponse;
+import com.nhnacademy.eggplantdelivery.dto.response.LogServerResponseHeader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +31,21 @@ import org.springframework.web.reactive.function.client.WebClient;
 @RequiredArgsConstructor
 @Slf4j
 public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
+
+    private final AuthenticationConfig authenticationConfig;
+    @Value(value = "${eggplant.project-name}")
+    private final String projectName;
+    @Value(value = "${eggplant.project-version}")
+    private String projectVersion;
+    @Value(value = "${eggplant.log-version}")
+    private String logVersion;
+
+    @Value(value = "${eggplant.log-source}")
+    private String logSource;
+    @Value(value = "${eggplant.log-type}")
+    private String logType;
+    @Value(value = "${eggplant.localhost}")
+    private String localhost;
 
     @Override
     public void sendTrackingNo(final CreatedTrackingNoDto createdTrackingNoDto,
@@ -68,6 +91,62 @@ public class DefaultDeliveryAdaptor implements DeliveryAdaptor {
                  .exchangeToMono(clientResponse -> {
                      if (clientResponse.statusCode().equals(HttpStatus.OK)) {
                          return clientResponse.bodyToMono(ResponseEntity.class);
+                     } else {
+                         return null;
+                     }
+                 })
+                 .block();
+    }
+
+    @Override
+    public void sendTrackingNoDlxToLogServer(OrderInfoRequestDto orderInfoRequestDto) {
+        WebClient webClient = WebClient.builder()
+                                       .baseUrl("https://api-logncrash.cloud.toast.com")
+                                       .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                                       .build();
+
+        webClient.post()
+                 .uri(uriBuilder -> uriBuilder.path("/v2/log")
+                                              .build())
+                 .bodyValue(
+                     new LogRequest(authenticationConfig.findSecretDataFromSecureKeyManager(projectName),
+                         projectVersion, logVersion, orderInfoRequestDto.toString(), logSource,
+                         logType,
+                         localhost)
+                 )
+                 .exchangeToMono(logServerResponse -> {
+                     if (logServerResponse.statusCode().equals(HttpStatus.OK)) {
+                         return logServerResponse.bodyToMono(
+                             new ParameterizedTypeReference<LogServerResponse<LogServerResponseHeader>>() {
+                             });
+                     } else {
+                         return null;
+                     }
+                 })
+                 .block();
+    }
+
+    @Override
+    public void sendDeliveryStatusDlxToLogServer(DeliveryInfoStatusResponseDto deliveryInfoStatusResponseDto) {
+        WebClient webClient = WebClient.builder()
+                                       .baseUrl("https://api-logncrash.cloud.toast.com")
+                                       .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                                       .build();
+
+        webClient.post()
+                 .uri(uriBuilder -> uriBuilder.path("/v2/log")
+                                              .build())
+                 .bodyValue(
+                     new LogRequest(authenticationConfig.findSecretDataFromSecureKeyManager(projectName),
+                         projectVersion, logVersion, deliveryInfoStatusResponseDto.toString(), logSource,
+                         logType,
+                         localhost)
+                 )
+                 .exchangeToMono(logServerResponse -> {
+                     if (logServerResponse.statusCode().equals(HttpStatus.OK)) {
+                         return logServerResponse.bodyToMono(
+                             new ParameterizedTypeReference<LogServerResponse<LogServerResponseHeader>>() {
+                             });
                      } else {
                          return null;
                      }

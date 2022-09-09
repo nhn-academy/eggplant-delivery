@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * 배송 정보 수정을 위한 응답 Dto 입니다.
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class DeliveryInfoStatusResponseDto {
 
     @NotBlank(message = "운송장 번호는 필수 사항 입니다.")

@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.eggplantdelivery.dto.request.OrderInfoRequestDto;
-import com.nhnacademy.eggplantdelivery.module.Sender;
+import com.nhnacademy.eggplantdelivery.module.Publisher;
 import com.nhnacademy.eggplantdelivery.repository.DeliveryInfoRepository;
 import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import java.util.Collections;
@@ -39,18 +39,12 @@ class DeliveryControllerTest {
     DeliveryInfoRepository repository;
 
     @MockBean
-    HttpServletRequest servletRequest;
-
-    @MockBean
-    Sender sender;
+    Publisher publisher;
 
     @Test
     @DisplayName("운송장 번호 생성")
     void testCreateTrackingNo() throws Exception {
-        when(servletRequest.getRemoteHost()).thenReturn("localhost");
-        when(servletRequest.getServerPort()).thenReturn(8080);
-
-        doNothing().when(sender).send(any(OrderInfoRequestDto.class));
+        doNothing().when(publisher).send(any(OrderInfoRequestDto.class));
 
         OrderInfoRequestDto orderInfoRequestDto = new OrderInfoRequestDto(
             null, "1", "1", "1", "1", "1", "1");

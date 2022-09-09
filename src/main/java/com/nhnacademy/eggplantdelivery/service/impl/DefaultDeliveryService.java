@@ -15,7 +15,6 @@ import com.nhnacademy.eggplantdelivery.utill.UuidGenerator;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,10 +60,8 @@ public class DefaultDeliveryService implements DeliveryService {
                                                     aesGenerator.aesEcbEncode(orderInfoRequestDto.getSuccessHost()))
                                                 .build());
 
-        orderInfoRequestDto.insertTrackingNo(trackingNo);
-
         CreatedTrackingNoDto createdTrackingNoDto =
-            new CreatedTrackingNoDto(Objects.requireNonNull(orderInfoRequestDto.getTrackingNo()).toString(),
+            new CreatedTrackingNoDto(trackingNo.toString(),
                 orderInfoRequestDto.getOrderNo());
 
         adaptor.sendTrackingNo(createdTrackingNoDto, orderInfoRequestDto.getSuccessHost());
@@ -87,6 +84,16 @@ public class DefaultDeliveryService implements DeliveryService {
         String shopHost = aesGenerator.aesEcbDecode(deliveryInfoStatusResponseDto.getShopHost());
 
         adaptor.sendChangeDeliveryStatus(deliveryInfoStatusRequestDto, shopHost);
+    }
+
+    @Override
+    public void createTrackingNoDlx(OrderInfoRequestDto orderInfoRequestDto) {
+        adaptor.sendTrackingNoDlxToLogServer(orderInfoRequestDto);
+    }
+
+    @Override
+    public void transmitDeliveryStatusDlx(DeliveryInfoStatusResponseDto deliveryInfoStatusResponseDto) {
+        adaptor.sendDeliveryStatusDlxToLogServer(deliveryInfoStatusResponseDto);
     }
 
 }

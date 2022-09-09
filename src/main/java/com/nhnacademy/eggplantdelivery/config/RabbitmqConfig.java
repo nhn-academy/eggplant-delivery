@@ -3,9 +3,11 @@ package com.nhnacademy.eggplantdelivery.config;
 import static com.nhnacademy.eggplantdelivery.constant.ExchangeConstant.DIRECT_EXCHANGE;
 import static com.nhnacademy.eggplantdelivery.constant.ExchangeConstant.DIRECT_EXCHANGE_DLX;
 import static com.nhnacademy.eggplantdelivery.constant.QueueConstant.CHANGE_DELIVERY_STATUS;
+import static com.nhnacademy.eggplantdelivery.constant.QueueConstant.CHANGE_DELIVERY_STATUS_DLX;
 import static com.nhnacademy.eggplantdelivery.constant.QueueConstant.REQUEST_TRACKING_NO;
 import static com.nhnacademy.eggplantdelivery.constant.QueueConstant.REQUEST_TRACKING_NO_DLX;
 import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_CHANGE_DELIVERY_STATUS;
+import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_CHANGE_DELIVERY_STATUS_DLX;
 import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_REQUEST_TRACKING_NO;
 import static com.nhnacademy.eggplantdelivery.constant.RoutingKeyConstant.ROUTING_REQUEST_TRACKING_NO_DLX;
 
@@ -103,7 +105,7 @@ public class RabbitmqConfig {
 
     @Bean
     Queue queueRequestTrackingNo() {
-        Map<String, Object> withArguments = new HashMap<>();
+        Map<String, Object> withArguments = getWithArguments();
 
         withArguments.put("x-dead-letter-exchange", DIRECT_EXCHANGE_DLX.getValue());
         withArguments.put("x-dead-letter-routing-key", ROUTING_REQUEST_TRACKING_NO_DLX.getValue());
@@ -112,14 +114,25 @@ public class RabbitmqConfig {
 
     @Bean
     Queue queueRequestTrackingNoDlx() {
-        Map<String, Object> withArguments = new HashMap<>();
+        Map<String, Object> withArguments = getWithArguments();
 
         return new Queue(REQUEST_TRACKING_NO_DLX.getValue(), false, false, false, withArguments);
     }
 
     @Bean
     Queue queueChangeDeliveryStatus() {
+        Map<String, Object> withArguments = getWithArguments();
+
+        withArguments.put("x-dead-letter-exchange", DIRECT_EXCHANGE_DLX.getValue());
+        withArguments.put("x-dead-letter-routing-key", ROUTING_CHANGE_DELIVERY_STATUS_DLX.getValue());
         return new Queue(CHANGE_DELIVERY_STATUS.getValue(), false);
+    }
+
+    @Bean
+    Queue queueChangeDeliveryStatusDlx() {
+        Map<String, Object> withArguments = getWithArguments();
+
+        return new Queue(CHANGE_DELIVERY_STATUS_DLX.getValue(), false, false, false, withArguments);
     }
 
     @Bean
@@ -134,7 +147,7 @@ public class RabbitmqConfig {
 
     @Bean
     Binding bindRequestTrackingNo(final Queue queueRequestTrackingNo,
-        final DirectExchange exchange) {
+                                  final DirectExchange exchange) {
 
         return BindingBuilder.bind(queueRequestTrackingNo)
                              .to(exchange)
@@ -143,7 +156,7 @@ public class RabbitmqConfig {
 
     @Bean
     Binding bindRequestTrackingNoDlx(final Queue queueRequestTrackingNoDlx,
-        final DirectExchange exchangeDlx) {
+                                     final DirectExchange exchangeDlx) {
 
         return BindingBuilder.bind(queueRequestTrackingNoDlx)
                              .to(exchangeDlx)
@@ -152,12 +165,25 @@ public class RabbitmqConfig {
     }
 
     @Bean
-    Binding bindReadyToDelivering(final Queue queueChangeDeliveryStatus,
-        final DirectExchange exchange) {
+    Binding bindChangeDeliveryStatus(final Queue queueChangeDeliveryStatus,
+                                     final DirectExchange exchange) {
 
         return BindingBuilder.bind(queueChangeDeliveryStatus)
                              .to(exchange)
                              .with(ROUTING_CHANGE_DELIVERY_STATUS.getValue());
+    }
+
+    @Bean
+    Binding bindChangeDeliveryStatusDlx(final Queue queueChangeDeliveryStatusDlx,
+                                        final DirectExchange exchangeDlx) {
+
+        return BindingBuilder.bind(queueChangeDeliveryStatusDlx)
+                             .to(exchangeDlx)
+                             .with(ROUTING_CHANGE_DELIVERY_STATUS_DLX.getValue());
+    }
+
+    private Map<String, Object> getWithArguments() {
+        return new HashMap<>();
     }
 
 }

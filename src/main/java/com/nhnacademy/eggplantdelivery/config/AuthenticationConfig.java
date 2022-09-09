@@ -76,7 +76,7 @@ public class AuthenticationConfig {
      * @param keyId secure key 를 얻기 위해 필요한 key id.
      * @return 원하는 secure key 를 반환.
      */
-    String findSecretDataFromSecureKeyManager(final String keyId) {
+    public String findSecretDataFromSecureKeyManager(final String keyId) {
         try {
             KeyStore clientStore = KeyStore.getInstance("PKCS12");
             Resource resource = new ClassPathResource("/github-action.p12");
@@ -104,7 +104,7 @@ public class AuthenticationConfig {
                           .getBody()
                           .getSecret();
         } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException
-            | UnrecoverableKeyException | IOException | KeyManagementException e) {
+                 | UnrecoverableKeyException | IOException | KeyManagementException e) {
             throw new FindSecretDataFromSecureKeyManagerException();
         }
     }

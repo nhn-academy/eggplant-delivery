@@ -6,7 +6,6 @@ import com.nhnacademy.eggplantdelivery.service.DeliveryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -20,12 +19,11 @@ import org.springframework.validation.annotation.Validated;
 @Component
 @Slf4j
 public class Consumer {
-
-    private final RetryTemplate retryTemplate;
     private final DeliveryService deliveryService;
 
     @RabbitListener(queues = "queue.RequestTrackingNo")
     public void receiveRequestTrackingNo(@Validated final OrderInfoRequestDto orderInfoRequestDto) {
+        log.info("OrderNo:{}", orderInfoRequestDto.getOrderNo());
         deliveryService.createTrackingNo(orderInfoRequestDto);
     }
 
@@ -34,4 +32,15 @@ public class Consumer {
         @Validated final DeliveryInfoStatusResponseDto deliveryInfoStatusResponseDto) {
         deliveryService.transmitDeliveryStatus(deliveryInfoStatusResponseDto);
     }
+
+    @RabbitListener(queues = "queue.RequestTrackingNo.dlx")
+    public void requestTrackingNoDlx(final OrderInfoRequestDto orderInfoRequestDto) {
+        deliveryService.createTrackingNoDlx(orderInfoRequestDto);
+    }
+
+    @RabbitListener(queues = "queue.ChangeDeliveryStatus.dlx")
+    public void requestChangeDeliveryStatusDlx(DeliveryInfoStatusResponseDto deliveryInfoStatusResponseDto) {
+        deliveryService.transmitDeliveryStatusDlx(deliveryInfoStatusResponseDto);
+    }
+
 }

@@ -10,7 +10,9 @@ public enum QueueConstant {
 
     REQUEST_TRACKING_NO("queue.RequestTrackingNo"),
     REQUEST_TRACKING_NO_DLX("queue.RequestTrackingNo.dlx"),
-    CHANGE_DELIVERY_STATUS("queue.ChangeDeliveryStatus");
+    CHANGE_DELIVERY_STATUS("queue.ChangeDeliveryStatus"),
+    CHANGE_DELIVERY_STATUS_DLX("queue.ChangeDeliveryStatus.dlx");
+
 
     private final String value;
 

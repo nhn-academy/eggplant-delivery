@@ -125,7 +125,7 @@ public class RabbitmqConfig {
 
         withArguments.put("x-dead-letter-exchange", DIRECT_EXCHANGE_DLX.getValue());
         withArguments.put("x-dead-letter-routing-key", ROUTING_CHANGE_DELIVERY_STATUS_DLX.getValue());
-        return new Queue(CHANGE_DELIVERY_STATUS.getValue(), false);
+        return new Queue(CHANGE_DELIVERY_STATUS.getValue(), false, false, false, withArguments);
     }
 
     @Bean
